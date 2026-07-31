@@ -3,6 +3,7 @@ import { FeatureSection } from "@/components/sections/FeatureSection";
 import {
   Header,
   HeroSection,
+  PortalSection,
   TestimonialSection,
   FaqSection,
   Footer,
@@ -44,13 +45,13 @@ export default function Home() {
         description="Connect with tech experts, share your challenges, and explore solutions in networks, information systems, cybersecurity, and more – all in one reliable platform."
         buttons={[
           {
-            href: "#",
-            label: "Start Free Trail",
-            color: "dark",
+            href: "/helpdesk",
+            label: "Buat Tiket Bantuan",
+            color: "primary",
           },
           {
-            href: "#",
-            label: "Learn More",
+            href: "/events",
+            label: "Lihat Pelatihan Terbaru",
             color: "transparent",
             variant: "link",
             icon: "tabler:arrow-right",
@@ -63,6 +64,16 @@ export default function Home() {
         }}
         clientsLabel="Trusted by 100+ Brands"
         clients={clients}
+      />
+      <PortalSection
+        id="portal"
+        title="Portal Layanan Terpadu BKLTI"
+        description="Mulai dari konsultasi teknologi, pengajuan layanan, hingga pemantauan kebutuhan, semua dapat diakses melalui satu pengalaman yang lebih terarah."
+        badge={{ leading: true, icon: "tabler:building-community", label: "TAHAP 1" }}
+        buttons={[
+          { label: "Lihat Layanan", href: "#features", color: "primary" },
+          { label: "Hubungi Kami", href: "#footer", color: "light", variant: "link", icon: "tabler:arrow-right" },
+        ]}
       />
       <FeatureSection
         id="features"
@@ -137,9 +148,9 @@ export default function Home() {
         faqs={faqs}
       />
       <CtaSection
-        title="Ready to get started?"
-        description="Your IT solutions are just one click away. Whether you need expert consultation, in-depth technical advice, or collaborative project support, BKLTI is here to help you achieve your goals."
-        buttons={[{ label: "Start for Free", href: "#", color: "dark" }]}
+        title="Tertarik Kuliah Jalur Cepat?"
+        description="Ikuti Program Rekognisi Pembelajaran Lampau (RPL) dan konversi pengalaman kerja atau sertifikasi IT Anda menjadi SKS. Dapatkan gelar sarjana lebih cepat!"
+        buttons={[{ label: "Pelajari Program RPL", href: "/program-rpl", color: "primary" }]}
       />
       <Footer
         id="footer"

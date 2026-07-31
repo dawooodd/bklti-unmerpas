@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 
 export function Button({
   href,
@@ -18,10 +19,11 @@ export function Button({
     { "size-4": size === "small" },
     { "group-hover:translate-x-1 duration-100 ease-in-out": variant === "link" }
   );
-  const Tag = href ? "a" : "button";
+  
+  const Tag = href ? Link : "button";
   return (
     <Tag
-      href={href}
+      href={href || ""}
       onClick={onClick}
       className={cn(
         "group inline-flex gap-2 items-center rounded-full leading-none duration-200 ease-in-out",

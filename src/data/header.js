@@ -6,20 +6,24 @@ export const header = {
   },
   links: [
     {
-      label: "Features",
-      href: "#features",
+      label: "Event & Pelatihan",
+      href: "/events",
     },
     {
-      label: "Pricing",
-      href: "#pricing",
+      label: "Helpdesk TI",
+      href: "/helpdesk",
     },
     {
-      label: "Testimonials",
-      href: "#testimonials",
+      label: "Materi & Modul",
+      href: "/materi",
     },
     {
-      label: "FAQs",
-      href: "#faqs",
+      label: "Kegiatan",
+      href: "/kegiatan",
+    },
+    {
+      label: "Program RPL",
+      href: "/program-rpl",
     },
   ],
   buttons: [

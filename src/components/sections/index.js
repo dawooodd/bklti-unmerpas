@@ -1,5 +1,6 @@
 export { Header } from "./Header";
 export { HeroSection } from "./HeroSection";
+export { PortalSection } from "./PortalSection";
 export { PricingSection } from "./PricingSection";
 export { TestimonialSection } from "./TestimonialSection";
 export { LargeFeatureSection } from "./LargeFeatureSection";
