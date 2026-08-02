@@ -55,3 +55,86 @@ model Document {
 
   @@map("documents")
 }
+
+// ============================================
+// Model: User (Tahap 11 & 17)
+// Menyimpan data akun pengguna (Login & RBAC)
+// role: "USER" | "ADMIN" | "SUPER_ADMIN"
+// ============================================
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // Opsional karena user SSO Google tidak punya password
+  role          String    @default("USER")
+  nim           String?   @unique
+  prodi         String?
+  createdAt     DateTime  @default(now())
+
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("users")
+}
+
+// ============================================
+// Model: NextAuth Adapters (Tahap 17)
+// Dibutuhkan untuk integrasi SSO / NextAuth
+// ============================================
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? // Sesuaikan tipe data tergantung database jika perlu
+  access_token       String? // Sesuaikan tipe data tergantung database jika perlu
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? // Sesuaikan tipe data tergantung database jika perlu
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ============================================
+// Model: Notification (Tahap 11)
+// Menyimpan notifikasi akademik & pengumuman
+// type: "SPP" | "UJIAN" | "SKRIPSI" | "YUDISIUM" | "WISUDA" | "PENGUMUMAN"
+// targetRole: "ALL" | "MAHASISWA"
+// ============================================
+model Notification {
+  id         Int      @id @default(autoincrement())
+  type       String
+  message    String
+  targetRole String   @default("ALL")
+  date       DateTime
+  createdAt  DateTime @default(now())
+
+  @@map("notifications")
+}

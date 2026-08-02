@@ -1,58 +1,37 @@
 export const testimonials = [
   {
     name: "Andi Pratama",
-    title: "CEO, PT Digital Nusantara",
-    avatar: "https://i.pravatar.cc/150?img=1",
+    title: "Alumni Informatika 2022",
+    avatar: "https://i.pravatar.cc/150?img=11",
     testimonial:
-      "BKLTI’s consultation helped our team speed up the development of a government website with the right and secure solutions. The response was fast and highly professional.",
+      "Bimbingan dan konsultasi dari BKLTI sangat membantu saya dalam menyusun skripsi tentang pengembangan web e-government. Layanannya responsif dan solutif.",
   },
   {
     name: "Rina Kartika",
-    title: "CTO of a Company",
-    avatar: "https://i.pravatar.cc/150?img=2",
-    testimonial:
-      "The interactive discussions with experts helped us find creative solutions for the Android education app we were developing",
-  },
-  {
-    name: "John Smith",
-    title: "COO of a Company",
-    avatar: "https://i.pravatar.cc/150?img=3",
-    testimonial:
-      "BKLTI’s priority service provided us with very detailed cybersecurity guidance. It was incredibly helpful in protecting our customer data.",
-  },
-  {
-    name: "Jane Smith",
-    title: "CFO of a Company",
-    avatar: "https://i.pravatar.cc/150?img=4",
-    testimonial:
-      "Beyond consultation, BKLTI’s tips and security guidelines have been extremely valuable for our retail business, which now relies heavily on technology.",
-  },
-  {
-    name: "John Doe",
-    title: "CEO of  a Company",
+    title: "Alumni Rekayasa Perangkat Lunak 2023",
     avatar: "https://i.pravatar.cc/150?img=5",
     testimonial:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. provident ducimus aut, velit facere fugit praesentium, necessitatibus voluptatem consequuntur amet ratione? Sint distinctio quod non quae?",
+      "Diskusi interaktif bersama pakar IT kampus memberikan insight berharga untuk mendesain aplikasi Android interaktif pada tugas akhir saya. Skill desain saya meningkat drastis!",
   },
   {
-    name: "Jane Doe",
-    title: "CTO of a Company",
-    avatar: "https://i.pravatar.cc/150?img=6",
+    name: "Budi Santoso",
+    title: "Alumni Informatika 2021",
+    avatar: "https://i.pravatar.cc/150?img=13",
     testimonial:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur expedita, ipsam nobis blanditiis provident ducimus aut, velit facere fugit praesent necessitatibus",
+      "Pelatihan dan praktikum jaringan di fasilitas BKLTI memberi saya dasar kompetensi yang sangat kuat. Pengetahuan itu langsung saya terapkan di tempat kerja saya saat ini.",
   },
   {
-    name: "John Smith",
-    title: "COO of a Company",
-    avatar: "https://i.pravatar.cc/150?img=7",
+    name: "Siti Aminah",
+    title: "Alumni Rekayasa Perangkat Lunak 2024",
+    avatar: "https://i.pravatar.cc/150?img=9",
     testimonial:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur expedita, ipsam nobis blanditiis provident ducimus aut, velit facere fugit praesentium, necessitatibus voluptatem consequuntur amet ratione? Sint distinctio quod non quae?",
+      "Terima kasih BKLTI atas modul pelatihan dan panduan arsitektur software-nya! Berkat sumber daya yang disediakan, saya berhasil membangun startup lulus tepat waktu.",
   },
   {
-    name: "Jane Smith",
-    title: "CFO of a Company",
-    avatar: "https://i.pravatar.cc/150?img=8",
+    name: "Hendra Wijaya",
+    title: "Alumni Informatika 2020",
+    avatar: "https://i.pravatar.cc/150?img=15",
     testimonial:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur expedita, ipsam nobis blanditiis provident ducimus aut, velit facere fugit praesentium",
+      "Konsultasi keamanan siber yang disediakan BKLTI sungguh membuka wawasan. Sangat relevan dengan kebutuhan industri saat ini, mempermudah saya mendapat pekerjaan.",
   },
 ];

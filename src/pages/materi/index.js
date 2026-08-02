@@ -95,7 +95,7 @@ export default function MateriPage() {
         <title>Repositori Materi — BKLTI Unmerpas</title>
         <meta
           name="description"
-          content="Unduh modul pelatihan, slide presentasi, dan dokumen resmi dari BKLTI Universitas Mercubuana Yogyakarta."
+          content="Unduh modul pelatihan, slide presentasi, dan dokumen resmi dari BKLTI Universitas Merdeka Pasuruan."
         />
       </Head>
 
@@ -119,7 +119,7 @@ export default function MateriPage() {
               label: "REPOSITORI MATERI",
             }}
             title="Materi & Dokumen BKLTI"
-            description="Akses dan unduh modul pelatihan, slide presentasi, serta dokumen resmi BKLTI untuk mendukung proses belajar civitas akademika Universitas Mercubuana Yogyakarta."
+            description="Akses dan unduh modul pelatihan, slide presentasi, serta dokumen resmi BKLTI untuk mendukung proses belajar civitas akademika Universitas Merdeka Pasuruan."
           />
         </div>
       </section>

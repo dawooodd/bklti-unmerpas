@@ -38,7 +38,7 @@ const events = [
     title: "Turnamen Mobile Legends: Bang Bang",
     date: "5 September 2026",
     time: "08:00 - Selesai",
-    location: "Aula Universitas Mercubuana Yogyakarta",
+    location: "Aula Universitas Merdeka Pasuruan",
     image: "/BKLTI.png",
     category: "Turnamen",
     description:
@@ -65,7 +65,7 @@ export default function EventsPage() {
         <title>Daftar Acara & Pelatihan — BKLTI Unmerpas</title>
         <meta
           name="description"
-          content="Temukan berbagai acara, pelatihan, workshop, dan turnamen yang diselenggarakan oleh BKLTI Universitas Mercubuana Yogyakarta."
+          content="Temukan berbagai acara, pelatihan, workshop, dan turnamen yang diselenggarakan oleh BKLTI Universitas Merdeka Pasuruan."
         />
       </Head>
 
@@ -90,7 +90,7 @@ export default function EventsPage() {
               label: "EVENT & PELATIHAN",
             }}
             title="Acara & Pelatihan BKLTI"
-            description="Ikuti berbagai acara menarik, pelatihan, workshop, dan kompetisi yang diselenggarakan oleh Biro Konsultasi Layanan Teknologi Informasi Universitas Mercubuana Yogyakarta."
+            description="Ikuti berbagai acara menarik, pelatihan, workshop, dan kompetisi yang diselenggarakan oleh Biro Konsultasi Layanan Teknologi Informasi Universitas Merdeka Pasuruan."
           />
         </div>
       </section>
@@ -98,11 +98,11 @@ export default function EventsPage() {
       {/* Event Grid */}
       <section className="px-6 lg:px-8 pb-24">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => (
               <article
                 key={event.slug}
-                className="group flex flex-col bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 overflow-hidden shadow-sm hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-300 hover:-translate-y-1"
+                className="group flex flex-col h-full bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 overflow-hidden shadow-sm hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-300 ease-in-out hover:-translate-y-1"
               >
                 {/* Card Image */}
                 <div className="relative overflow-hidden aspect-video bg-base-100 dark:bg-base-800">

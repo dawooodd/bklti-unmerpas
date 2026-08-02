@@ -115,7 +115,7 @@ export default function KegiatanPage() {
         <title>Dokumentasi Kegiatan — BKLTI Unmerpas</title>
         <meta
           name="description"
-          content="Lihat dokumentasi kegiatan, jurnal pelatihan, kuliah tamu, dan kegiatan BKLTI Universitas Mercubuana Yogyakarta."
+          content="Lihat dokumentasi kegiatan, jurnal pelatihan, kuliah tamu, dan kegiatan BKLTI Universitas Merdeka Pasuruan."
         />
       </Head>
 
@@ -138,7 +138,7 @@ export default function KegiatanPage() {
               label: "JURNAL KEGIATAN",
             }}
             title="Dokumentasi & Kegiatan"
-            description="Jelajahi rangkuman kegiatan, pelatihan, kuliah tamu, dan momen-momen penting yang telah diselenggarakan oleh BKLTI Universitas Mercubuana Yogyakarta."
+            description="Jelajahi rangkuman kegiatan, pelatihan, kuliah tamu, dan momen-momen penting yang telah diselenggarakan oleh BKLTI Universitas Merdeka Pasuruan."
           />
         </div>
       </section>
@@ -186,32 +186,18 @@ export default function KegiatanPage() {
         </div>
       </section>
 
-      {/* Masonry Grid */}
+      {/* Normal Grid (Tahap 5) */}
       <section className="px-6 lg:px-8 pb-24">
         <div className="max-w-6xl mx-auto">
           {filteredActivities.length > 0 ? (
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredActivities.map((item, idx) => (
                 <article
                   key={item.id}
-                  className={cn(
-                    "group break-inside-avoid bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 overflow-hidden shadow-sm hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-300",
-                    // Variasi tinggi untuk efek masonry
-                    idx % 3 === 0 && "pb-0",
-                    idx % 3 === 1 && "pb-0",
-                    idx % 3 === 2 && "pb-0"
-                  )}
+                  className="group flex flex-col h-full bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 overflow-hidden shadow-sm hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-300 ease-in-out hover:-translate-y-1"
                 >
                   {/* Thumbnail */}
-                  <div
-                    className={cn(
-                      "relative overflow-hidden bg-base-100 dark:bg-base-800",
-                      // Variasi aspect ratio untuk efek masonry
-                      idx % 3 === 0 && "aspect-video",
-                      idx % 3 === 1 && "aspect-[4/3]",
-                      idx % 3 === 2 && "aspect-[3/2]"
-                    )}
-                  >
+                  <div className="relative overflow-hidden aspect-video bg-base-100 dark:bg-base-800">
                     <img
                       src={item.image}
                       alt={item.title}
@@ -230,7 +216,7 @@ export default function KegiatanPage() {
                   </div>
 
                   {/* Body */}
-                  <div className="p-5 flex flex-col gap-3">
+                  <div className="p-5 flex flex-col flex-grow gap-3">
                     {/* Date + Read Time */}
                     <div className="flex items-center gap-3 text-xs text-muted">
                       <span className="inline-flex items-center gap-1">
@@ -250,14 +236,14 @@ export default function KegiatanPage() {
                     </h3>
 
                     {/* Excerpt */}
-                    <p className="text-sm text-muted leading-relaxed line-clamp-2">
+                    <p className="text-sm text-muted leading-relaxed flex-grow">
                       {item.excerpt}
                     </p>
 
                     {/* Read More Link */}
                     <Link
                       href={`/kegiatan/${item.slug}`}
-                      className="inline-flex items-center gap-1.5 text-sm font-medium text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 mt-1 group/link"
+                      className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 group/link"
                     >
                       Baca Selengkapnya
                       <Icon

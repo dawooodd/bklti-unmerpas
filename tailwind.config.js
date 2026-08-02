@@ -11,11 +11,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        base: colors.stone,
+        base: colors.slate,
         primary: colors.purple,
       },
       borderColor: {
-        default: colors.stone["300"],
+        default: colors.slate["300"],
       },
       fontFamily: {
         display: ["var(--font-display)"],

@@ -68,7 +68,7 @@ const events = [
     title: "Turnamen Mobile Legends: Bang Bang",
     date: "5 September 2026",
     time: "08:00 - Selesai",
-    location: "Aula Universitas Mercubuana Yogyakarta",
+    location: "Aula Universitas Merdeka Pasuruan",
     image: "/BKLTI.png",
     category: "Turnamen",
     description:

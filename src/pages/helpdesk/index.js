@@ -77,8 +77,8 @@ export default function HelpdeskPage() {
   });
   const [fileName, setFileName] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [ticketNumber, setTicketNumber] = useState("");
 
   const handleChange = (e) => {
@@ -93,16 +93,29 @@ export default function HelpdeskPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     setErrorMsg("");
+    setIsSubmitting(true);
+
+    // Validasi field utama terisi
+    if (!formData.kategori) {
+      setErrorMsg("Harap pilih kategori layanan terlebih dahulu.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!formData.deskripsi.trim()) {
+      setErrorMsg("Harap isi deskripsi masalah terlebih dahulu.");
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
+      // 1. Simpan ke database via API
       const res = await fetch("/api/helpdesk/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           nama: formData.nama,
-          emailOrNim: formData.email,
+          emailOrNim: formData.email, // API menggunakan emailOrNim
           kategori: formData.kategori,
           deskripsi: formData.deskripsi,
         }),
@@ -110,16 +123,26 @@ export default function HelpdeskPage() {
 
       const data = await res.json();
 
-      if (res.ok) {
-        setTicketNumber(data.data.ticketNumber);
-        setIsSubmitted(true);
-      } else {
-        setErrorMsg(data.message || "Gagal membuat tiket.");
+      if (!res.ok) {
+        throw new Error(data.message || "Gagal membuat tiket.");
       }
+
+      // 2. Set nomor tiket dari response
+      const generatedTicket = data.data.ticketNumber;
+      setTicketNumber(generatedTicket);
+
+      // 3. Bangun pesan WhatsApp otomatis dengan nomor tiket
+      const kategoriLabel = categories.find((c) => c.value === formData.kategori)?.label || formData.kategori;
+      const pesan = `Halo Admin BKLTI, saya ingin konsultasi/meminta bantuan layanan TI terkait: ${kategoriLabel}\n\n*Nomor Tiket:* ${generatedTicket}\n*Detail:* ${formData.deskripsi.trim()}`;
+      const waUrl = `https://wa.me/6283833504040?text=${encodeURIComponent(pesan)}`;
+
+      // Buka WhatsApp
+      window.open(waUrl, "_blank", "noopener,noreferrer");
+      setIsSubmitted(true);
     } catch (error) {
-      setErrorMsg("Terjadi kesalahan jaringan.");
+      setErrorMsg(error.message);
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -135,7 +158,7 @@ export default function HelpdeskPage() {
         <title>Helpdesk & Ticketing — BKLTI Unmerpas</title>
         <meta
           name="description"
-          content="Ajukan tiket bantuan TI untuk konsultasi, perbaikan perangkat, gangguan jaringan, dan layanan lainnya dari BKLTI Universitas Mercubuana Yogyakarta."
+          content="Ajukan tiket bantuan TI untuk konsultasi, perbaikan perangkat, gangguan jaringan, dan layanan lainnya dari BKLTI Universitas Merdeka Pasuruan."
         />
       </Head>
 
@@ -425,13 +448,17 @@ export default function HelpdeskPage() {
                           </div>
                         )}
                         <Button
-                          label={isLoading ? "Mengirim..." : "Buat Tiket"}
+                          label={isSubmitting ? "Memproses..." : "Kirim via WhatsApp"}
                           color="primary"
                           block={true}
-                          icon={isLoading ? "tabler:loader" : "tabler:send"}
+                          icon={isSubmitting ? "tabler:loader" : "tabler:brand-whatsapp"}
+                          leading={true}
+                          disabled={isSubmitting}
                           onClick={() => {}}
-                          disabled={isLoading}
                         />
+                        <p className="text-xs text-muted text-center">
+                          Kamu akan diarahkan ke WhatsApp untuk mengirim pesan ke Admin BKLTI.
+                        </p>
                       </div>
                     </form>
                   </>

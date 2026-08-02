@@ -2,13 +2,13 @@
 import { SectionHeading } from "#/SectionHeading";
 import { TestimonialCard } from "#/cards";
 import { Button } from "#/base";
+import { motion } from "framer-motion";
 
 export function TestimonialSection({
   title,
   description,
   badge,
   testimonials,
-  button,
   ...rest
 }) {
   return (
@@ -17,21 +17,46 @@ export function TestimonialSection({
       {...rest}
     >
       <div className="container px-4 mx-auto">
-        <SectionHeading
-          align="center"
-          title={title}
-          description={description}
-          badge={badge}
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-10">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <SectionHeading
+            align="center"
+            title={title}
+            description={description}
+            badge={badge}
+          />
+        </motion.div>
+        
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-10"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.15 }
+            }
+          }}
+        >
           {testimonials &&
             testimonials.map((item, index) => (
-              <TestimonialCard key={index} {...item} />
+              <motion.div 
+                key={index}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                }}
+              >
+                <TestimonialCard {...item} />
+              </motion.div>
             ))}
-        </div>
-        <div className="text-center mt-12">
-          <Button {...button} />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

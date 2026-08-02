@@ -109,7 +109,7 @@ export default function ProgramRPLPage() {
         <title>Program Perkuliahan Jalur RPL — BKLTI Unmerpas</title>
         <meta
           name="description"
-          content="Program Rekognisi Pembelajaran Lampau (RPL) Universitas Mercubuana Yogyakarta. Raih gelar sarjana dengan pengakuan pengalaman kerja dan sertifikasi profesional Anda."
+          content="Program Rekognisi Pembelajaran Lampau (RPL) Universitas Merdeka Pasuruan. Raih gelar sarjana dengan pengakuan pengalaman kerja dan sertifikasi profesional Anda."
         />
       </Head>
 
@@ -133,7 +133,7 @@ export default function ProgramRPLPage() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-950 text-primary-500 dark:text-primary-300 text-sm font-medium mb-6">
             <Icon icon="tabler:award" className="w-5 h-5" />
-            PROGRAM RPL — UNIVERSITAS MERCUBUANA YOGYAKARTA
+            PROGRAM RPL — UNIVERSITAS MERDEKA PASURUAN
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-title leading-tight mb-6">
@@ -150,10 +150,11 @@ export default function ProgramRPLPage() {
 
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Button
-              href="#pendaftaran"
-              label="Daftar Sekarang"
+              href={`https://wa.me/6281235226522?text=${encodeURIComponent("Halo Admin, saya tertarik untuk mendaftar Program Perkuliahan Jalur RPL. Mohon informasi selengkapnya.")}`}
+              label="Daftar Sekarang via WA"
               color="primary"
-              icon="tabler:arrow-right"
+              icon="tabler:brand-whatsapp"
+              leading={true}
             />
             <Button
               href="#"
@@ -220,7 +221,7 @@ export default function ProgramRPLPage() {
                   .
                 </p>
                 <p>
-                  Melalui program RPL di Universitas Mercubuana Yogyakarta,
+                  Melalui program RPL di Universitas Merdeka Pasuruan,
                   pengalaman kerja, sertifikat kompetensi, dan pelatihan
                   profesional Anda dapat dikonversi menjadi Satuan Kredit
                   Semester (SKS). Ini berarti Anda tidak perlu mengulang

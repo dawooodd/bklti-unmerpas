@@ -1,14 +1,22 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import path from "path";
 
-// Singleton pattern untuk menghindari multiple PrismaClient instances
-// saat hot-reloading di development mode Next.js
-// https://www.prisma.io/docs/guides/other/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices
+// ============================================
+// Prisma Client Singleton untuk Next.js
+// ============================================
+// Pola Singleton mencegah kebocoran koneksi (too many connections)
+// saat hot-reloading di development mode (next dev).
+// Referensi: https://www.prisma.io/docs/guides/other/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices
 
 const globalForPrisma = globalThis;
 
 function createPrismaClient() {
-  const adapter = new PrismaBetterSqlite3({ url: "file:./prisma/dev.db" });
+  // Path absolut ke file database SQLite, relatif dari root project.
+  // Ini memastikan path konsisten baik saat dipanggil dari API route,
+  // getServerSideProps, maupun dari prisma.config.ts.
+  const dbPath = path.join(process.cwd(), "prisma", "dev.db");
+  const adapter = new PrismaBetterSqlite3({ url: `file:${dbPath}` });
   return new PrismaClient({ adapter });
 }
 

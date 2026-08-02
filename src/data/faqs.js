@@ -1,18 +1,18 @@
 export const faqs = [
   {
-    title: "What is BKLTI?",
-    body: "BKLTI is an IT consultation and discussion platform where you can get expert advice, technical solutions, and collaborative problem-solving for your projects.",
+    title: "Apa itu BKLTI?",
+    body: "BKLTI adalah gerbang digital utama fakultas untuk layanan konsultasi TI dan wadah praktikum digital mahasiswa.",
   },
   {
-    title: "Why should I use BKLTI?",
-    body: "We provide tailored IT guidance, security recommendations, and technology solutions for businesses, startups, and organizations of all sizes.",
+    title: "Siapa saja yang bisa menggunakan layanan ini?",
+    body: "Mahasiswa untuk hard skills, Dosen untuk pengabdian masyarakat, Fakultas untuk dokumentasi, dan Mitra Eksternal/UMKM untuk solusi IT terjangkau.",
   },
   {
-    title: "How do I request a consultation?",
-    body: "Simply create an account, choose your preferred plan, and submit a consultation request through our dashboard. You can also schedule a live session with an expert.",
+    title: "Apa saja layanan yang disediakan?",
+    body: "Konsultasi IT, perbaikan jaringan, keamanan siber, serta publikasi riset dan modul pelatihan.",
   },
   {
-    title: "What kind of topics can I discuss?",
-    body: "You can discuss anything from web and mobile app development, IT security, and data management, to cloud solutions, system integration, and troubleshooting.",
+    title: "Bagaimana cara mengajukan sesi konsultasi?",
+    body: "Cukup daftar atau masuk dengan akun Google berdomain kampus Anda, lalu ajukan tiket bantuan TI melalui dashboard portal. Anda juga bisa mendaftar kegiatan dan pelatihan IT terbaru.",
   },
 ];

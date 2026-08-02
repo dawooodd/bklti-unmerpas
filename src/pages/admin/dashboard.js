@@ -2,8 +2,21 @@ import Head from "next/head";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Icon } from "@iconify/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (!session || (session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN")) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
   // Ambil data pendaftaran event, urutkan dari yang terbaru
   const rawEvents = await prisma.eventRegistration.findMany({
     orderBy: { createdAt: "desc" },

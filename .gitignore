@@ -1,6 +1,23 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+
+# Environment variables
+.env
+.env.*
+
+# Local SQLite databases
+dev.db
+prisma/dev.db
+*.db
+*.sqlite
+
+# Dependencies & Build output (Standar untuk Node.js & Next.js)
+node_modules/
+.next/
+out/
+build/
+
 /node_modules
 /.pnp
 .pnp.js
