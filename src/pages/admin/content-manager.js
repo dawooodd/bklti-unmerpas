@@ -15,8 +15,8 @@ export async function getServerSideProps(context) {
     return { redirect: { destination: "/auth/login?callbackUrl=/admin/content-manager", permanent: false } };
   }
 
-  // Redirect ke beranda jika bukan ADMIN
-  if (session.user.role !== "ADMIN") {
+  // Redirect ke beranda jika bukan ADMIN atau SUPER_ADMIN
+  if (session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN") {
     return { redirect: { destination: "/", permanent: false } };
   }
 

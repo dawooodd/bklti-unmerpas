@@ -3,12 +3,11 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 
-
-// Daftar domain email yang diizinkan untuk login
-const ALLOWED_DOMAINS = ["@unmerpas.ac.id"];
+// Domain email kampus yang memiliki hak istimewa (bisa dijadikan ADMIN)
+const CAMPUS_DOMAINS = ["@unmerpas.ac.id"];
 
 export const authOptions = {
-  // Integrasi NextAuth dengan Prisma
+  // Integrasi NextAuth dengan Prisma (auto-create user di DB saat login)
   adapter: PrismaAdapter(prisma),
 
   providers: [
@@ -19,29 +18,24 @@ export const authOptions = {
   ],
 
   callbacks: {
-    // 1. Filter Login: Tolak email selain domain kampus
-    async signIn({ user, account, profile }) {
+    // 1. Sign In: Izinkan SEMUA akun Google untuk login
+    async signIn({ user, account }) {
       if (account.provider === "google") {
-        const userEmail = user.email || "";
-        const isAllowed = ALLOWED_DOMAINS.some(domain => userEmail.endsWith(domain));
-
-        if (!isAllowed) {
-          console.warn(`[SSO] Blokir login dari email non-kampus: ${userEmail}`);
-          return false; // Tolak login
-        }
+        // Semua email Google diizinkan masuk sebagai USER
+        console.log(`[SSO] Login diterima: ${user.email}`);
+        return true;
       }
       return true;
     },
 
     // 2. JWT Callback: Menyuntikkan data dari DB ke dalam Token
-    // Callback ini dipanggil saat token JWT dibuat atau diupdate
     async jwt({ token, user, trigger, session }) {
-      // Jika `user` ada, berarti ini saat login pertama kali
+      // Saat login pertama kali, ambil data user dari DB
       if (user) {
         token.id = user.id;
-        token.role = user.role;
-        token.nim = user.nim;
-        token.prodi = user.prodi;
+        token.role = user.role || "USER";
+        token.nim = user.nim || null;
+        token.prodi = user.prodi || null;
       }
 
       // Jika profil diupdate (misal setelah onboarding)
@@ -53,7 +47,7 @@ export const authOptions = {
       return token;
     },
 
-    // 3. Session Callback: Menyuntikkan data dari Token ke Frontend
+    // 3. Session Callback: Kirim data role, nim, prodi ke Frontend
     async session({ session, token }) {
       if (session.user && token) {
         session.user.id = token.id;
@@ -67,7 +61,7 @@ export const authOptions = {
 
   session: {
     strategy: "jwt",
-    maxAge: 36500 * 24 * 60 * 60, // 100 tahun (Batas default, dievaluasi juga di middleware)
+    maxAge: 30 * 24 * 60 * 60, // 30 hari
   },
 
   pages: {
@@ -75,7 +69,14 @@ export const authOptions = {
     error: "/auth/login",
   },
 
-  secret: process.env.NEXTAUTH_SECRET || "bklti-unmerpas-secret-key-development",
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);
+
+// Helper: Cek apakah email termasuk domain kampus
+// Digunakan oleh API change-role untuk validasi upgrade ke ADMIN
+export function isCampusEmail(email) {
+  if (!email) return false;
+  return CAMPUS_DOMAINS.some((domain) => email.toLowerCase().endsWith(domain));
+}

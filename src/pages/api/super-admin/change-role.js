@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { authOptions, isCampusEmail } from "@/pages/api/auth/[...nextauth]";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -28,34 +28,55 @@ export default async function handler(req, res) {
     });
   }
 
+  // Hanya boleh assign ke ADMIN atau USER (SUPER_ADMIN tidak bisa ditambah)
   if (newRole !== "ADMIN" && newRole !== "USER") {
     return res.status(400).json({
       success: false,
-      message: "Role yang diizinkan hanya 'ADMIN' atau 'USER'.",
+      message: "Role yang diizinkan hanya 'ADMIN' atau 'USER'. SUPER_ADMIN tidak bisa di-assign dari sini.",
+    });
+  }
+
+  // Hindari Super Admin mengubah role-nya sendiri
+  if (userId === session.user.id) {
+    return res.status(403).json({
+      success: false,
+      message: "SUPER_ADMIN tidak bisa mengubah role-nya sendiri dari halaman ini.",
     });
   }
 
   try {
-    // 2. Logika KUOTA Admin: Maksimal 2 Admin
+    // 2. Logika KUOTA: Maksimal 3 ADMIN
     if (newRole === "ADMIN") {
       const adminCount = await prisma.user.count({
         where: { role: "ADMIN" },
       });
 
-      if (adminCount >= 2) {
+      if (adminCount >= 3) {
         return res.status(403).json({
           success: false,
-          message: "Kuota Admin Penuh (Maksimal 2). Turunkan salah satu Admin sebelum mengangkat yang baru.",
+          message: "Kuota Admin Penuh (Maksimal 3). Turunkan salah satu Admin sebelum mengangkat yang baru.",
         });
       }
-    }
 
-    // Hindari Super Admin mengubah role-nya sendiri
-    if (userId === session.user.id) {
-        return res.status(403).json({
-            success: false,
-            message: "SUPER_ADMIN tidak bisa mengubah role-nya sendiri dari halaman ini."
+      // Validasi domain email kampus sebelum upgrade ke ADMIN
+      const targetUser = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { email: true },
+      });
+
+      if (!targetUser) {
+        return res.status(404).json({
+          success: false,
+          message: "Pengguna tidak ditemukan di database.",
         });
+      }
+
+      if (!isCampusEmail(targetUser.email)) {
+        return res.status(403).json({
+          success: false,
+          message: "Gagal: Hanya email kampus (@unmerpas.ac.id) yang bisa dijadikan Admin.",
+        });
+      }
     }
 
     // 3. Eksekusi Update Role
@@ -75,8 +96,7 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error("Error changing role:", error);
-    
-    // Tangani jika user ID tidak ditemukan
+
     if (error.code === "P2025") {
       return res.status(404).json({
         success: false,
