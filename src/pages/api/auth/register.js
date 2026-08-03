@@ -19,30 +19,30 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "Format email tidak valid." });
     }
 
-    // Cek apakah email sudah terdaftar
-    const existingEmail = await prisma.user.findUnique({
-      where: { email },
-    });
-    if (existingEmail) {
-      return res.status(400).json({ message: "Email ini sudah terdaftar. Silakan langsung masuk." });
+    // TAHAP 3: Logika Bootstrapping Super Admin (Tendik Only)
+    let assignedRole = "USER";
+
+    if (prodi === "Tendik (Tenaga Kependidikan)") {
+      // Cek apakah sudah ada SUPER_ADMIN di database
+      const superAdminCount = await prisma.user.count({
+        where: { role: "SUPER_ADMIN" },
+      });
+
+      // Jika belum ada sama sekali, jadikan pendaftar Tendik pertama ini sebagai SUPER_ADMIN
+      if (superAdminCount === 0) {
+        assignedRole = "SUPER_ADMIN";
+        console.log(`[BOOTSTRAP] Pengguna pertama (Tendik) mendaftar. Diberikan role SUPER_ADMIN: ${email}`);
+      }
     }
 
-    // Cek apakah NIM sudah terdaftar (NIM harus unik)
-    const existingNim = await prisma.user.findUnique({
-      where: { nim },
-    });
-    if (existingNim) {
-      return res.status(400).json({ message: "NIM ini sudah terdaftar oleh pengguna lain." });
-    }
-
-    // Simpan ke database dengan role default USER dan status NONE
+    // TAHAP 1: Operasi Create dengan Blok try..catch spesifik
     const newUser = await prisma.user.create({
       data: {
         name: name.trim(),
         email: email.trim().toLowerCase(),
         nim: nim.trim(),
         prodi: prodi.trim(),
-        role: "USER",
+        role: assignedRole,
         adminRequestStatus: "NONE",
       },
     });
@@ -54,10 +54,19 @@ export default async function handler(req, res) {
         id: newUser.id,
         name: newUser.name,
         email: newUser.email,
+        role: newUser.role,
       },
     });
   } catch (error) {
-    console.error("Error Registration API:", error);
-    return res.status(500).json({ message: "Terjadi kesalahan pada server." });
+    // TAHAP 1: Penanganan Error Spesifik
+    
+    // Cek jika error dari Prisma (P2002: Unique Constraint Violation)
+    if (error.code === "P2002") {
+      return res.status(400).json({ message: "Email atau NIM sudah terdaftar!" });
+    }
+
+    // Tangkap error lain (terutama masalah koneksi Neon DB Serverless)
+    console.error("[REGISTER_ERROR] Neon DB Error / Internal Error:", error);
+    return res.status(500).json({ message: "Gagal terhubung ke database. Silakan coba lagi." });
   }
 }

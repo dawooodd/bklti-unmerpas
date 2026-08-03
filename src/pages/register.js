@@ -56,7 +56,6 @@ export default function Register() {
         <div className="w-full max-w-md bg-white dark:bg-base-900 rounded-3xl shadow-xl border border-base-200 dark:border-base-800 p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-display font-bold text-title">Daftar Akun</h1>
-            <p className="text-muted mt-2">Buat profil Anda sebelum login via SSO Google</p>
           </div>
 
           {success ? (
@@ -128,7 +127,7 @@ export default function Register() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-title mb-1.5">Program Studi</label>
+                <label className="block text-sm font-semibold text-title mb-1.5">Program Studi / Divisi</label>
                 <select
                   required
                   value={form.prodi}
@@ -137,11 +136,7 @@ export default function Register() {
                 >
                   <option value="Informatika">Informatika</option>
                   <option value="Rekayasa Perangkat Lunak">Rekayasa Perangkat Lunak</option>
-                  <option value="Sistem Informasi">Sistem Informasi</option>
-                  <option value="Agroteknologi">Agroteknologi</option>
-                  <option value="Manajemen">Manajemen</option>
-                  <option value="Akuntansi">Akuntansi</option>
-                  <option value="Lainnya">Lainnya (Dosen/Tendik)</option>
+                  <option value="Tendik (Tenaga Kependidikan)">Tendik (Tenaga Kependidikan)</option>
                 </select>
               </div>
 
