@@ -65,8 +65,10 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "Email atau NIM sudah terdaftar!" });
     }
 
+    // TAHAP 3: Tambahkan log mendetail untuk debugging di Vercel
+    console.error("PRISMA ERROR DETAILS:", error);
+
     // Tangkap error lain (terutama masalah koneksi Neon DB Serverless)
-    console.error("[REGISTER_ERROR] Neon DB Error / Internal Error:", error);
     return res.status(500).json({ message: "Gagal terhubung ke database. Silakan coba lagi." });
   }
 }
