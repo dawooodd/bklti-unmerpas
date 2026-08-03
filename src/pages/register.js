@@ -1,43 +1,48 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
+import { signIn } from "next-auth/react";
 
-export default function RegisterPage() {
+export default function Register() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const [form, setForm] = useState({
     name: "",
     email: "",
-    password: "",
     nim: "",
-    prodi: "",
+    prodi: "Informatika",
   });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
+    setError("");
 
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(form),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Terjadi kesalahan");
+        throw new Error(data.message || "Gagal mendaftar");
       }
 
-      // Jika sukses, arahkan ke halaman login
-      router.push("/login?registered=true");
+      setSuccess(true);
+      // Auto redirect to login via Google SSO after 3 seconds
+      setTimeout(() => {
+        signIn("google", { callbackUrl: "/" });
+      }, 3000);
     } catch (err) {
       setError(err.message);
+    } finally {
       setLoading(false);
     }
   };
@@ -45,111 +50,124 @@ export default function RegisterPage() {
   return (
     <>
       <Head>
-        <title>Daftar Akun - BKLTI Unmerpas</title>
+        <title>Pendaftaran Akun — BKLTI</title>
       </Head>
-      <div className="min-h-screen flex items-center justify-center bg-base-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl border border-base-200">
+      <div className="min-h-screen flex items-center justify-center bg-base-50 dark:bg-base-950 p-4">
+        <div className="w-full max-w-md bg-white dark:bg-base-900 rounded-3xl shadow-xl border border-base-200 dark:border-base-800 p-8">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-extrabold text-title">Daftar Akun</h2>
-            <p className="text-muted text-sm mt-2">Buat akun untuk mengakses layanan BKLTI</p>
+            <h1 className="text-3xl font-display font-bold text-title">Daftar Akun</h1>
+            <p className="text-muted mt-2">Buat profil Anda sebelum login via SSO Google</p>
           </div>
 
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
-              {error}
+          {success ? (
+            <div className="text-center p-6 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl border border-emerald-100 dark:border-emerald-800">
+              <Icon icon="tabler:circle-check" className="w-12 h-12 text-emerald-600 dark:text-emerald-400 mx-auto mb-3" />
+              <h3 className="text-lg font-bold text-emerald-800 dark:text-emerald-300">Pendaftaran Berhasil!</h3>
+              <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-2">
+                Mengarahkan Anda ke Google Login...
+              </p>
             </div>
-          )}
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {error && (
+                <div className="p-4 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-sm font-medium rounded-xl border border-red-100 dark:border-red-800 flex items-center gap-2">
+                  <Icon icon="tabler:alert-circle" className="w-5 h-5 shrink-0" />
+                  {error}
+                </div>
+              )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-title mb-1">
-                Nama Lengkap <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-base-300 focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 transition-all outline-none"
-                placeholder="Masukkan nama lengkap"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-title mb-1">
-                Email <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-base-300 focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 transition-all outline-none"
-                placeholder="email@unmerpas.ac.id"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-title mb-1">
-                Password <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="password"
-                required
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-base-300 focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 transition-all outline-none"
-                placeholder="Buat kata sandi"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-title mb-1">
-                  NIM <span className="text-xs text-muted font-normal">(opsional)</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.nim}
-                  onChange={(e) => setFormData({ ...formData, nim: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-base-300 focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 transition-all outline-none"
-                  placeholder="Nomor Induk Mahasiswa"
-                />
+                <label className="block text-sm font-semibold text-title mb-1.5">Nama Lengkap</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Icon icon="tabler:user" className="w-5 h-5 text-muted" />
+                  </div>
+                  <input
+                    type="text"
+                    required
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="w-full pl-11 pr-4 py-3 bg-base-50 dark:bg-base-950 border border-base-200 dark:border-base-800 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-title"
+                    placeholder="Contoh: Budi Santoso"
+                  />
+                </div>
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-title mb-1">
-                  Program Studi <span className="text-xs text-muted font-normal">(opsional)</span>
-                </label>
+                <label className="block text-sm font-semibold text-title mb-1.5">Email (Akun Google)</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Icon icon="tabler:mail" className="w-5 h-5 text-muted" />
+                  </div>
+                  <input
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    className="w-full pl-11 pr-4 py-3 bg-base-50 dark:bg-base-950 border border-base-200 dark:border-base-800 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-title"
+                    placeholder="Gunakan akun Google aktif"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-title mb-1.5">NIM / NIP</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Icon icon="tabler:id" className="w-5 h-5 text-muted" />
+                  </div>
+                  <input
+                    type="text"
+                    required
+                    value={form.nim}
+                    onChange={(e) => setForm({ ...form, nim: e.target.value })}
+                    className="w-full pl-11 pr-4 py-3 bg-base-50 dark:bg-base-950 border border-base-200 dark:border-base-800 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-title"
+                    placeholder="Nomor Induk"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-title mb-1.5">Program Studi</label>
                 <select
-                  value={formData.prodi}
-                  onChange={(e) => setFormData({ ...formData, prodi: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-base-300 focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 transition-all outline-none"
+                  required
+                  value={form.prodi}
+                  onChange={(e) => setForm({ ...form, prodi: e.target.value })}
+                  className="w-full px-4 py-3 bg-base-50 dark:bg-base-950 border border-base-200 dark:border-base-800 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-title appearance-none"
                 >
-                  <option value="">Pilih Prodi...</option>
-                  <option value="Teknik Informatika">Teknik Informatika</option>
+                  <option value="Informatika">Informatika</option>
+                  <option value="Rekayasa Perangkat Lunak">Rekayasa Perangkat Lunak</option>
                   <option value="Sistem Informasi">Sistem Informasi</option>
                   <option value="Agroteknologi">Agroteknologi</option>
                   <option value="Manajemen">Manajemen</option>
                   <option value="Akuntansi">Akuntansi</option>
+                  <option value="Lainnya">Lainnya (Dosen/Tendik)</option>
                 </select>
               </div>
-            </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 rounded-xl transition-colors disabled:opacity-50 mt-2"
-            >
-              {loading ? "Memproses..." : "Daftar Akun"}
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3.5 mt-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold shadow-lg shadow-primary-600/20 hover:shadow-primary-600/40 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <Icon icon="tabler:loader-2" className="w-5 h-5 animate-spin" />
+                ) : (
+                  <>
+                    <Icon icon="tabler:user-plus" className="w-5 h-5" />
+                    Daftar Sekarang
+                  </>
+                )}
+              </button>
+            </form>
+          )}
 
-          <p className="mt-6 text-center text-sm text-muted">
-            Sudah punya akun?{" "}
-            <Link href="/login" className="text-primary-600 font-medium hover:underline">
+          <div className="mt-8 text-center text-sm text-muted">
+            Sudah mendaftar?{" "}
+            <Link href="/auth/login" className="font-semibold text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">
               Masuk di sini
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </>

@@ -1,64 +1,63 @@
 import { prisma } from "@/lib/prisma";
-import bcrypt from "bcryptjs";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ message: `Method ${req.method} tidak diizinkan` });
+    return res.status(405).json({ message: "Method tidak diizinkan" });
   }
 
   try {
-    const { name, email, password, nim, prodi } = req.body;
+    const { name, email, nim, prodi } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: "Nama, email, dan password wajib diisi" });
+    // Validasi input dasar
+    if (!name || !email || !nim || !prodi) {
+      return res.status(400).json({ message: "Semua field wajib diisi." });
+    }
+
+    // Validasi format email sederhana
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Format email tidak valid." });
     }
 
     // Cek apakah email sudah terdaftar
-    const existingUser = await prisma.user.findUnique({
+    const existingEmail = await prisma.user.findUnique({
       where: { email },
     });
-
-    if (existingUser) {
-      return res.status(409).json({ message: "Email sudah terdaftar" });
+    if (existingEmail) {
+      return res.status(400).json({ message: "Email ini sudah terdaftar. Silakan langsung masuk." });
     }
 
-    // Cek apakah NIM sudah terdaftar (jika diisi)
-    if (nim) {
-      const existingNim = await prisma.user.findUnique({
-        where: { nim },
-      });
-
-      if (existingNim) {
-        return res.status(409).json({ message: "NIM sudah terdaftar" });
-      }
+    // Cek apakah NIM sudah terdaftar (NIM harus unik)
+    const existingNim = await prisma.user.findUnique({
+      where: { nim },
+    });
+    if (existingNim) {
+      return res.status(400).json({ message: "NIM ini sudah terdaftar oleh pengguna lain." });
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    // Simpan user baru ke database
-    const user = await prisma.user.create({
+    // Simpan ke database dengan role default USER dan status NONE
+    const newUser = await prisma.user.create({
       data: {
-        name,
-        email,
-        password: hashedPassword,
-        nim: nim || null,
-        prodi: prodi || null,
-        // Role default adalah USER (diambil otomatis dari default skema)
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        nim: nim.trim(),
+        prodi: prodi.trim(),
+        role: "USER",
+        adminRequestStatus: "NONE",
       },
     });
 
     return res.status(201).json({
+      success: true,
       message: "Pendaftaran berhasil",
       user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
       },
     });
   } catch (error) {
-    console.error("Error Registration:", error);
-    return res.status(500).json({ message: "Terjadi kesalahan pada server saat pendaftaran" });
+    console.error("Error Registration API:", error);
+    return res.status(500).json({ message: "Terjadi kesalahan pada server." });
   }
 }
