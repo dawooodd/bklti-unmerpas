@@ -2,12 +2,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession, signIn, signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { Button } from "#/base";
 import { ThemeSwitch } from "#/ThemeSwitch";
 
 export function Header({ logo, links, buttons, className, ...rest }) {
   const [open, setOpen] = useState(false);
+  const { data: session } = useSession();
+
   return (
     <header className="fixed w-full bg-base-50/50 dark:bg-base-950/50 backdrop-blur-xl z-10">
       <nav
@@ -52,11 +55,25 @@ export function Header({ logo, links, buttons, className, ...rest }) {
             ))}
           </ul>
         </div>
-        <div className="flex gap-2 ml-auto">
+        <div className="flex gap-2 ml-auto items-center">
           <ThemeSwitch />
-          {buttons.map((button, index) => (
-            <Button key={index} {...button} />
-          ))}
+          
+          {!session ? (
+            <>
+              <Button label="Masuk" color="transparent" size="small" onClick={() => signIn()} />
+              <Button label="Daftar" color="dark" size="small" href="/register" />
+            </>
+          ) : (
+            <>
+              <Button 
+                label={session.user.role === "USER" ? "Profil" : "Dashboard"} 
+                color="transparent" 
+                size="small" 
+                href={session.user.role === "SUPER_ADMIN" ? "/super-admin/dashboard" : session.user.role === "ADMIN" ? "/admin/content-manager" : "/profile"} 
+              />
+              <Button label="Keluar" color="dark" size="small" onClick={() => signOut()} />
+            </>
+          )}
         </div>
         <Button
           icon={open ? "tabler:x" : "tabler:menu-2"}
