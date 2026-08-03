@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export function FaqSection({ title, description, buttons, faqs, ...rest }) {
   return (
-    <section className="bg-base-100 dark:bg-base-900" {...rest}>
+    <section className="bg-base-100 dark:bg-base-900 py-12 lg:py-16" {...rest}>
       <div className="container px-4 mx-auto">
         <motion.div 
           className="grid grid-cols-12 gap-4 lg:gap-20 bg-white dark:bg-base-950 p-4 sm:p-8 md:p-20 rounded-3xl"

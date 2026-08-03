@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/base";
 import { Header, Footer } from "@/components/sections";
@@ -133,7 +134,7 @@ export default function EventDetailPage({ event }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          eventSlug: event.slug,
+          eventSlug: router.query.slug || event.slug,
           nama: formData.nama,
           nim: formData.nim,
           instansi: formData.prodi,
@@ -215,10 +216,11 @@ export default function EventDetailPage({ event }) {
             {/* Left: Event Image */}
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden aspect-video shadow-lg border border-base-200 dark:border-base-800">
-                <img
+                <Image
                   src={event.image}
                   alt={event.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
                 <span
                   className={`absolute top-4 left-4 text-xs font-semibold px-3 py-1.5 rounded-full ${categoryColors[event.category] || "bg-base-100 text-base-600"}`}
@@ -440,20 +442,20 @@ export default function EventDetailPage({ event }) {
                           </div>
                         )}
                         <Button
-                          label={isLoading ? "Mengirim..." : "Kirim Pendaftaran"}
+                          type="submit"
+                          label={isLoading ? "Memproses..." : "Kirim Pendaftaran"}
                           color="primary"
                           block={true}
                           icon={isLoading ? "tabler:loader" : "tabler:send"}
-                          onClick={() => {}}
                           disabled={isLoading}
                         />
                       </div>
 
                       <p className="text-xs text-muted text-center">
                         Dengan mendaftar, kamu menyetujui{" "}
-                        <a href="#" className="text-primary-500 hover:underline">
+                        <Link href="#" className="text-primary-500 hover:underline">
                           syarat & ketentuan
-                        </a>{" "}
+                        </Link>{" "}
                         yang berlaku.
                       </p>
                     </form>

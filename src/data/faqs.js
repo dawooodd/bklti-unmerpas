@@ -5,7 +5,7 @@ export const faqs = [
   },
   {
     title: "Siapa saja yang bisa menggunakan layanan ini?",
-    body: "Mahasiswa untuk hard skills, Dosen untuk pengabdian masyarakat, Fakultas untuk dokumentasi, dan Mitra Eksternal/UMKM untuk solusi IT terjangkau.",
+    body: "Mahasiswa untuk layanan konsultasi, Dosen untuk pengabdian masyarakat, Fakultas untuk dokumentasi, dan Mitra Eksternal/UMKM untuk solusi IT terjangkau.",
   },
   {
     title: "Apa saja layanan yang disediakan?",

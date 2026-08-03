@@ -56,7 +56,7 @@ export default function Home({ latestNotification }) {
 
   useEffect(() => {
     if (latestNotification) {
-      const isClosed = sessionStorage.getItem(`announcement_closed_${latestNotification.id}`);
+      const isClosed = localStorage.getItem(`announcement_closed_${latestNotification.id}`);
       if (!isClosed) {
         const timer = setTimeout(() => {
           setShowModal(true);
@@ -69,7 +69,7 @@ export default function Home({ latestNotification }) {
   const handleCloseModal = () => {
     setShowModal(false);
     if (latestNotification) {
-      sessionStorage.setItem(`announcement_closed_${latestNotification.id}`, "true");
+      localStorage.setItem(`announcement_closed_${latestNotification.id}`, "true");
     }
   };
 
@@ -108,7 +108,7 @@ export default function Home({ latestNotification }) {
           },
         ]}
         image={{
-          src: "./tablet-mockup.png",
+          src: "/tablet-mockup.png",
           alt: "Product Screenshot on Tablet",
           className: "w-full h-auto",
         }}
@@ -119,7 +119,7 @@ export default function Home({ latestNotification }) {
         id="portal"
         title="Portal Layanan Terpadu BKLTI"
         description="Mulai dari konsultasi teknologi, pengajuan layanan, hingga pemantauan kebutuhan, semua dapat diakses melalui satu pengalaman yang lebih terarah."
-        badge={{ leading: true, icon: "tabler:building-community", label: "TAHAP 1" }}
+        badge={{ leading: true, icon: "tabler:building-community" }}
         buttons={[
           { label: "Lihat Layanan", href: "#features", color: "primary" },
           { label: "Hubungi Kami", href: "#footer", color: "light", variant: "link", icon: "tabler:arrow-right" },
@@ -132,11 +132,11 @@ export default function Home({ latestNotification }) {
         features={features}
       />
       <LargeFeatureSection
-        title="Stay Ahead in Your IT Solutions"
-        description="Get the right guidance, expert insights, and secure practices to help you solve IT challenges effectively."
+        title="Selangkah Lebih Maju dengan Solusi TI Kami"
+        description="Dapatkan panduan yang tepat, wawasan dari ahli, dan praktik keamanan terbaik untuk menyelesaikan tantangan TI Anda secara efektif."
         list={features.slice(0, 3)}
         image={{
-          src: "./phone-mockup(2).png",
+          src: "/phone-mockup(2).png",
           alt: "Image",
           className:
             "w-full aspect-square object-contain rotate-6 hover:rotate-0 duration-300 ease-in-out",
@@ -144,11 +144,11 @@ export default function Home({ latestNotification }) {
       />
       <LargeFeatureSection
         reverse={true}
-        title="Stay on Top of Your IT Needs"
-        description="Connect, consult, and collaborate to find the best solutions for your technology challenges."
+        title="Penuhi Kebutuhan TI Anda dengan Optimal"
+        description="Hubungi, konsultasikan, dan berkolaborasi bersama kami untuk menemukan solusi terbaik bagi tantangan teknologi Anda."
         list={features.slice(0, 3)}
         image={{
-          src: "./phone-mockup(1).png",
+          src: "/phone-mockup(1).png",
           alt: "Image",
           className:
             "w-full aspect-square object-contain -rotate-6 hover:rotate-0 duration-300 ease-in-out",

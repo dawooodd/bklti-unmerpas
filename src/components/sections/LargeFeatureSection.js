@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { SectionHeading } from "#/SectionHeading";
 import { FeatureCard } from "../cards/FeatureCard";
@@ -38,7 +38,7 @@ export function LargeFeatureSection({
             })}
           >
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 group-hover:w-2/3 aspect-square rounded-full bg-base-200 dark:bg-base-800 duration-200 ease-in-out"></div>
-            <img src={image.src} alt={image.alt} className={image.className} />
+            <Image src={image.src} alt={image.alt || "Feature"} width={600} height={600} className={image.className} />
           </div>
         </div>
       </div>

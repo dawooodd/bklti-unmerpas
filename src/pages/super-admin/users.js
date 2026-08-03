@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { prisma } from "@/lib/prisma";
 import { Icon } from "@iconify/react";
+import Image from "next/image";
 
 // ─── getServerSideProps: Hanya Super Admin yang bisa akses ────────────────────
 export async function getServerSideProps(context) {
@@ -156,7 +157,7 @@ export default function SuperAdminUsersPage({ sessionUser, users }) {
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
                           {u.image ? (
-                            <img src={u.image} alt={u.name} className="w-9 h-9 rounded-full object-cover border border-base-200" />
+                            <Image src={u.image} alt={u.name} width={36} height={36} className="w-9 h-9 rounded-full object-cover border border-base-200" />
                           ) : (
                             <div className="w-9 h-9 rounded-full bg-base-200 dark:bg-base-800 flex items-center justify-center text-muted font-bold">
                               {u.name?.charAt(0).toUpperCase() || "?"}

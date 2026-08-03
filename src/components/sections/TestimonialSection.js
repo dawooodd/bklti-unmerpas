@@ -13,7 +13,7 @@ export function TestimonialSection({
 }) {
   return (
     <section
-      className="bg-base-100 dark:bg-base-900 py-24 min-h-screen"
+      className="bg-base-100 dark:bg-base-900 py-12 lg:py-16 min-h-[60vh]"
       {...rest}
     >
       <div className="container px-4 mx-auto">
@@ -30,9 +30,8 @@ export function TestimonialSection({
             badge={badge}
           />
         </motion.div>
-        
         <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-10"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 my-10"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}

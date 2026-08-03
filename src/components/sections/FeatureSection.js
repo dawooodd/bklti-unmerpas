@@ -10,7 +10,7 @@ export function FeatureSection({
   ...rest
 }) {
   return (
-    <section className="bg-base-100 dark:bg-base-900 py-24" {...rest}>
+    <section className="bg-base-100 dark:bg-base-900 py-12 lg:py-16" {...rest}>
       <div className="container px-4 mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 50 }}

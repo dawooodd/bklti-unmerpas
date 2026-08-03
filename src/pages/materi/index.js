@@ -232,6 +232,9 @@ export default function MateriPage() {
                         leading={true}
                         color="primary"
                         size="small"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download
                       />
                     </div>
 

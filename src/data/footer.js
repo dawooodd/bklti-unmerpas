@@ -1,7 +1,7 @@
 export const footer = {
   copyright: "© 2026 gitwave. All rights reserved.",
   logo: {
-    src: "./logo.png",
+    src: "/logo.png",
     alt: "logo",
   },
   links: [

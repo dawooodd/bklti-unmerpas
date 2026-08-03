@@ -27,11 +27,5 @@ export const testimonials = [
     testimonial:
       "Terima kasih BKLTI atas modul pelatihan dan panduan arsitektur software-nya! Berkat sumber daya yang disediakan, saya berhasil membangun startup lulus tepat waktu.",
   },
-  {
-    name: "Hendra Wijaya",
-    title: "Alumni Informatika 2020",
-    avatar: "https://i.pravatar.cc/150?img=15",
-    testimonial:
-      "Konsultasi keamanan siber yang disediakan BKLTI sungguh membuka wawasan. Sangat relevan dengan kebutuhan industri saat ini, mempermudah saya mendapat pekerjaan.",
-  },
+
 ];

@@ -136,6 +136,9 @@ export default function HelpdeskPage() {
       const pesan = `Halo Admin BKLTI, saya ingin konsultasi/meminta bantuan layanan TI terkait: ${kategoriLabel}\n\n*Nomor Tiket:* ${generatedTicket}\n*Detail:* ${formData.deskripsi.trim()}`;
       const waUrl = `https://wa.me/6283833504040?text=${encodeURIComponent(pesan)}`;
 
+      // Tampilkan alert sukses sebelum beralih ke WhatsApp
+      alert(`Tiket berhasil dibuat dengan nomor: ${generatedTicket}\n\nMenghubungkan ke WhatsApp Admin BKLTI...`);
+
       // Buka WhatsApp
       window.open(waUrl, "_blank", "noopener,noreferrer");
       setIsSubmitted(true);
@@ -448,13 +451,13 @@ export default function HelpdeskPage() {
                           </div>
                         )}
                         <Button
+                          type="submit"
                           label={isSubmitting ? "Memproses..." : "Kirim via WhatsApp"}
                           color="primary"
                           block={true}
                           icon={isSubmitting ? "tabler:loader" : "tabler:brand-whatsapp"}
                           leading={true}
                           disabled={isSubmitting}
-                          onClick={() => {}}
                         />
                         <p className="text-xs text-muted text-center">
                           Kamu akan diarahkan ke WhatsApp untuk mengirim pesan ke Admin BKLTI.

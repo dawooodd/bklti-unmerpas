@@ -98,8 +98,8 @@ export default function EventsPage() {
       {/* Event Grid */}
       <section className="px-6 lg:px-8 pb-24">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {events.map((event) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {events?.map((event) => (
               <article
                 key={event.slug}
                 className="group flex flex-col h-full bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 overflow-hidden shadow-sm hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-300 ease-in-out hover:-translate-y-1"

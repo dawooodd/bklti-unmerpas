@@ -13,6 +13,7 @@ export function Button({
   block = false,
   onClick,
   className,
+  ...rest
 }) {
   const iconClass = cn(
     { "size-5": size === "base" },
@@ -20,11 +21,16 @@ export function Button({
     { "group-hover:translate-x-1 duration-100 ease-in-out": variant === "link" }
   );
   
-  const Tag = href ? Link : "button";
+  const isExternal = href?.startsWith('http') || href?.startsWith('mailto:') || href?.startsWith('tel:');
+  const isLink = href && !isExternal;
+  const Tag = isLink ? Link : (href ? "a" : "button");
+  
   return (
     <Tag
       href={href || ""}
       onClick={onClick}
+      {...(isLink ? { prefetch: false } : {})}
+      {...rest}
       className={cn(
         "group inline-flex gap-2 items-center rounded-full leading-none duration-200 ease-in-out",
         {

@@ -1,6 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Button } from "#/base";
 import { ThemeSwitch } from "#/ThemeSwitch";
@@ -16,13 +17,16 @@ export function Header({ logo, links, buttons, className, ...rest }) {
         )}
         {...rest}
       >
-        <a href={logo.href}>
-          <img
+        <Link href={logo.href} prefetch={false}>
+          <Image
             src={logo.src}
-            alt={logo.alt}
+            alt={logo.alt || "Logo"}
+            width={160}
+            height={40}
+            priority
             className="h-10 w-auto dark:invert"
           />
-        </a>
+        </Link>
         <div
           className={cn(
             "hidden md:block md:w-auto",
@@ -32,9 +36,10 @@ export function Header({ logo, links, buttons, className, ...rest }) {
         >
           <ul className="font-medium flex flex-col gap-2 p-4 md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
             {links.map((link, index) => (
-              <a
+              <Link
                 key={index}
                 href={link.href}
+                prefetch={false}
                 className={
                   open
                     ? "text-sm font-normal text-base-600 dark:text-base-400 hover:bg-base-100 dark:hover:bg-base-950 py-3 px-4 rounded-md"
@@ -43,7 +48,7 @@ export function Header({ logo, links, buttons, className, ...rest }) {
                 onClick={() => setOpen(false)}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </ul>
         </div>

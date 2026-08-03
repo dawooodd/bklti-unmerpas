@@ -102,6 +102,9 @@ const registrationSteps = [
   },
 ];
 
+const waText = "Halo Admin, saya tertarik untuk mendaftar Program Perkuliahan Jalur RPL. Mohon informasi selengkapnya.";
+const waUrl = `https://wa.me/6281235226522?text=${encodeURIComponent(waText)}`;
+
 export default function ProgramRPLPage() {
   return (
     <>
@@ -150,14 +153,18 @@ export default function ProgramRPLPage() {
 
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Button
-              href={`https://wa.me/6281235226522?text=${encodeURIComponent("Halo Admin, saya tertarik untuk mendaftar Program Perkuliahan Jalur RPL. Mohon informasi selengkapnya.")}`}
+              href={waUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               label="Daftar Sekarang via WA"
               color="primary"
               icon="tabler:brand-whatsapp"
               leading={true}
             />
             <Button
-              href="#"
+              href={waUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               label="Download Panduan"
               color="light"
               icon="tabler:download"
@@ -190,7 +197,7 @@ export default function ProgramRPLPage() {
       {/* ============================================ */}
       {/* APA ITU RPL?                                 */}
       {/* ============================================ */}
-      <section className="px-6 lg:px-8 py-20 bg-base-50 dark:bg-base-900">
+      <section className="px-6 lg:px-8 py-12 lg:py-16 bg-base-50 dark:bg-base-900">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 items-start">
             {/* Left: Title */}
@@ -264,7 +271,7 @@ export default function ProgramRPLPage() {
       {/* ============================================ */}
       {/* KEUNTUNGAN RPL                               */}
       {/* ============================================ */}
-      <section className="px-6 lg:px-8 py-20">
+      <section className="px-6 lg:px-8 py-12 lg:py-16">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-100 dark:bg-primary-950 text-primary-500 text-xs font-semibold mb-4">
@@ -305,7 +312,7 @@ export default function ProgramRPLPage() {
       {/* ============================================ */}
       {/* SYARAT & KETENTUAN                           */}
       {/* ============================================ */}
-      <section className="px-6 lg:px-8 py-20 bg-base-50 dark:bg-base-900">
+      <section className="px-6 lg:px-8 py-12 lg:py-16 bg-base-50 dark:bg-base-900">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12">
             {/* Left: Title */}
@@ -350,7 +357,7 @@ export default function ProgramRPLPage() {
       {/* ============================================ */}
       {/* ALUR PENDAFTARAN                             */}
       {/* ============================================ */}
-      <section id="pendaftaran" className="px-6 lg:px-8 py-20">
+      <section id="pendaftaran" className="px-6 lg:px-8 py-12 lg:py-16">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-100 dark:bg-primary-950 text-primary-500 text-xs font-semibold mb-4">
@@ -407,10 +414,12 @@ export default function ProgramRPLPage() {
           {/* CTA setelah timeline */}
           <div className="flex justify-center mt-14">
             <Button
-              href="#"
+              href={waUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               label="Mulai Pendaftaran"
               color="primary"
-              icon="tabler:arrow-right"
+              icon="tabler:brand-whatsapp"
             />
           </div>
         </div>
@@ -426,10 +435,12 @@ export default function ProgramRPLPage() {
         buttons={[
           {
             label: "Hubungi Kami",
-            href: "#",
+            href: waUrl,
+            target: "_blank",
+            rel: "noopener noreferrer",
             color: "primary",
             variant: "link",
-            icon: "tabler:arrow-right",
+            icon: "tabler:brand-whatsapp",
           },
         ]}
         faqs={rplFaqs}
