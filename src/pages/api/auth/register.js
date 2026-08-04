@@ -47,15 +47,9 @@ export default async function handler(req, res) {
       },
     });
 
-    return res.status(201).json({
-      success: true,
+    return res.status(200).json({
       message: "Pendaftaran berhasil",
-      user: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        role: newUser.role,
-      },
+      user: newUser,
     });
   } catch (error) {
     // TAHAP 1: Penanganan Error Spesifik
@@ -69,6 +63,6 @@ export default async function handler(req, res) {
     console.error("PRISMA ERROR DETAILS:", error);
 
     // Tangkap error lain (terutama masalah koneksi Neon DB Serverless)
-    return res.status(500).json({ message: "Gagal terhubung ke database. Silakan coba lagi." });
+    return res.status(500).json({ error: error.message });
   }
 }
