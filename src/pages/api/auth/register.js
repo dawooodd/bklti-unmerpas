@@ -1,6 +1,10 @@
 import { prisma } from "@/lib/prisma";
 
 export default async function handler(req, res) {
+  if (!process.env.DATABASE_URL) {
+    return res.status(500).json({ error: "FATAL: DATABASE_URL tidak terbaca oleh server" });
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method tidak diizinkan" });
   }
