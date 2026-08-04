@@ -27,7 +27,7 @@ function createPrismaClient() {
   // Explicitly passing connectionString to Pool
   const pool = new Pool({ connectionString });
   const adapter = new PrismaNeon(pool);
-  
+
   return new PrismaClient({ adapter });
 }
 
