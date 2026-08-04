@@ -108,7 +108,7 @@ export default function Home({ latestNotification }) {
           },
         ]}
         image={{
-          src: "./tablet-mockup.png",
+          src: "/tablet-mockup.png",
           alt: "Product Screenshot on Tablet",
           className: "w-full h-auto",
         }}
@@ -136,7 +136,7 @@ export default function Home({ latestNotification }) {
         description="Dapatkan panduan yang tepat, wawasan dari ahli, dan praktik keamanan terbaik untuk menyelesaikan tantangan TI Anda secara efektif."
         list={features.slice(0, 3)}
         image={{
-          src: "./phone-mockup(2).png",
+          src: "/phone-mockup(2).png",
           alt: "Image",
           className:
             "w-full aspect-square object-contain rotate-6 hover:rotate-0 duration-300 ease-in-out",
@@ -148,7 +148,7 @@ export default function Home({ latestNotification }) {
         description="Hubungi, konsultasikan, dan berkolaborasi bersama kami untuk menemukan solusi terbaik bagi tantangan teknologi Anda."
         list={features.slice(0, 3)}
         image={{
-          src: "./phone-mockup(1).png",
+          src: "/phone-mockup(1).png",
           alt: "Image",
           className:
             "w-full aspect-square object-contain -rotate-6 hover:rotate-0 duration-300 ease-in-out",
