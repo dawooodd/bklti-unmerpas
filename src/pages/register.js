@@ -36,10 +36,7 @@ export default function Register() {
       }
 
       setSuccess(true);
-      // Auto redirect to login via Google SSO after 3 seconds
-      setTimeout(() => {
-        signIn("google", { callbackUrl: "/" });
-      }, 3000);
+      router.push('/?registered=true');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -63,7 +60,7 @@ export default function Register() {
               <Icon icon="tabler:circle-check" className="w-12 h-12 text-emerald-600 dark:text-emerald-400 mx-auto mb-3" />
               <h3 className="text-lg font-bold text-emerald-800 dark:text-emerald-300">Pendaftaran Berhasil!</h3>
               <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-2">
-                Mengarahkan Anda ke Google Login...
+                Mengarahkan Anda ke Beranda...
               </p>
             </div>
           ) : (

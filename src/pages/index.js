@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
 import { prisma } from "@/lib/prisma";
 import { FeatureSection } from "@/components/sections/FeatureSection";
@@ -52,7 +53,15 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ latestNotification }) {
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+  const [showAnnouncement, setShowAnnouncement] = useState(false);
+
+  useEffect(() => {
+    if (router.query.registered === 'true') {
+      setShowAnnouncement(true);
+    }
+  }, [router.query.registered]);
 
   useEffect(() => {
     if (latestNotification) {
@@ -240,6 +249,31 @@ export default function Home({ latestNotification }) {
                 className="w-full py-3.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold shadow-lg shadow-primary-600/20 hover:shadow-primary-600/40 transition-all active:scale-[0.98]"
               >
                 Saya Mengerti, Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Welcome Announcement Modal */}
+      {showAnnouncement && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity duration-300">
+          <div className="bg-white dark:bg-base-900 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+            <div className="p-8 text-center">
+              <div className="mx-auto w-16 h-16 bg-primary-100 dark:bg-primary-900/40 rounded-full flex items-center justify-center mb-6 text-primary-600 dark:text-primary-400">
+                <Icon icon="tabler:party" className="w-8 h-8" />
+              </div>
+              <h3 className="text-2xl font-display font-bold text-title mb-2">Selamat Datang! / Pengumuman PMB & Jadwal Akademik</h3>
+              <p className="text-muted mb-6">
+                Terima kasih telah mendaftar. Silakan ikuti info akademik terbaru.
+              </p>
+              <button
+                onClick={() => {
+                  setShowAnnouncement(false);
+                  router.replace('/', undefined, { shallow: true });
+                }}
+                className="w-full py-3.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold shadow-lg transition-all"
+              >
+                Tutup
               </button>
             </div>
           </div>

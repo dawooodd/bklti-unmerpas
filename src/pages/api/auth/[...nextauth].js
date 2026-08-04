@@ -79,7 +79,6 @@ export const authOptions = {
   },
 
   pages: {
-    signIn: "/auth/login",
     error: "/auth/login", // Redirect ke login jika error (menangkap error custom di signIn)
   },
 
