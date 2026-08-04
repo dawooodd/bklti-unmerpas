@@ -28,11 +28,7 @@ function createPrismaClient() {
   const pool = new Pool({ connectionString });
   const adapter = new PrismaNeon(pool);
 
-  // Injeksi datasourceUrl secara eksplisit sesuai aturan Prisma 7
-  return new PrismaClient({
-    adapter,
-    datasourceUrl: connectionString,
-  });
+  return new PrismaClient({ adapter });
 }
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();
