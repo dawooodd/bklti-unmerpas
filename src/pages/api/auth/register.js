@@ -68,7 +68,7 @@ export default async function handler(req, res) {
     // TAHAP 3: Tambahkan log mendetail untuk debugging di Vercel
     console.error("PRISMA ERROR DETAILS:", error);
 
-    // Tangkap error lain (terutama masalah koneksi Neon DB Serverless)
-    return res.status(500).json({ message: "Gagal terhubung ke database. Silakan coba lagi." });
+    // Tangkap error lain secara transparan agar mudah di-debug jika tabel tidak ditemukan
+    return res.status(500).json({ message: "Gagal mendaftar: " + (error.message || "Terjadi kesalahan server") });
   }
 }

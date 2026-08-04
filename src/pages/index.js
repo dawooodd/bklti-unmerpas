@@ -34,10 +34,10 @@ export async function getServerSideProps() {
       props: {
         latestNotification: notification
           ? {
-              ...notification,
-              date: notification.date.toISOString(),
-              createdAt: notification.createdAt.toISOString(),
-            }
+            ...notification,
+            date: notification.date.toISOString(),
+            createdAt: notification.createdAt.toISOString(),
+          }
           : null,
       },
     };
@@ -56,7 +56,7 @@ export default function Home({ latestNotification }) {
 
   useEffect(() => {
     if (latestNotification) {
-      const isClosed = localStorage.getItem(`announcement_closed_${latestNotification.id}`);
+      const isClosed = sessionStorage.getItem(`announcement_closed_${latestNotification.id}`);
       if (!isClosed) {
         const timer = setTimeout(() => {
           setShowModal(true);
@@ -69,7 +69,7 @@ export default function Home({ latestNotification }) {
   const handleCloseModal = () => {
     setShowModal(false);
     if (latestNotification) {
-      localStorage.setItem(`announcement_closed_${latestNotification.id}`, "true");
+      sessionStorage.setItem(`announcement_closed_${latestNotification.id}`, "true");
     }
   };
 
@@ -108,7 +108,7 @@ export default function Home({ latestNotification }) {
           },
         ]}
         image={{
-          src: "/tablet-mockup.png",
+          src: "./tablet-mockup.png",
           alt: "Product Screenshot on Tablet",
           className: "w-full h-auto",
         }}
@@ -136,7 +136,7 @@ export default function Home({ latestNotification }) {
         description="Dapatkan panduan yang tepat, wawasan dari ahli, dan praktik keamanan terbaik untuk menyelesaikan tantangan TI Anda secara efektif."
         list={features.slice(0, 3)}
         image={{
-          src: "/phone-mockup(2).png",
+          src: "./phone-mockup(2).png",
           alt: "Image",
           className:
             "w-full aspect-square object-contain rotate-6 hover:rotate-0 duration-300 ease-in-out",
@@ -144,11 +144,11 @@ export default function Home({ latestNotification }) {
       />
       <LargeFeatureSection
         reverse={true}
-        title="Penuhi Kebutuhan TI Anda dengan Optimal"
+        title="Penuhi Kebutuhan IT Anda dengan Optimal"
         description="Hubungi, konsultasikan, dan berkolaborasi bersama kami untuk menemukan solusi terbaik bagi tantangan teknologi Anda."
         list={features.slice(0, 3)}
         image={{
-          src: "/phone-mockup(1).png",
+          src: "./phone-mockup(1).png",
           alt: "Image",
           className:
             "w-full aspect-square object-contain -rotate-6 hover:rotate-0 duration-300 ease-in-out",
@@ -156,7 +156,7 @@ export default function Home({ latestNotification }) {
       />
       <TestimonialSection
         id="testimonials"
-        title="Apa Kata Alumni Fakultas TI"
+        title="Apa Kata Alumni Fakultas IT"
         description="Dengar langsung dari mereka yang telah merasakan manfaat dari layanan konsultasi dan bimbingan BKLTI selama studi dan karir mereka."
         badge={{
           leading: true,
@@ -212,14 +212,14 @@ export default function Home({ latestNotification }) {
                     </p>
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={handleCloseModal}
                   className="p-1.5 text-muted hover:text-title hover:bg-base-100 dark:hover:bg-base-800 rounded-xl transition-colors"
                 >
                   <Icon icon="tabler:x" className="w-5 h-5" />
                 </button>
               </div>
-              
+
               <div className="bg-base-50 dark:bg-base-800/50 p-5 rounded-2xl mb-6 border border-base-200 dark:border-base-800">
                 <div className="mb-3">
                   <span className="inline-block px-3 py-1 rounded-lg text-xs font-bold tracking-wider uppercase border bg-white dark:bg-base-900 border-base-200 dark:border-base-700 text-title shadow-sm">
@@ -235,7 +235,7 @@ export default function Home({ latestNotification }) {
                 </div>
               </div>
 
-              <button 
+              <button
                 onClick={handleCloseModal}
                 className="w-full py-3.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold shadow-lg shadow-primary-600/20 hover:shadow-primary-600/40 transition-all active:scale-[0.98]"
               >
