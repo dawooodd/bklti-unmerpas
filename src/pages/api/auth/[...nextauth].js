@@ -12,21 +12,22 @@ export const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      allowDangerousEmailAccountLinking: true,
     }),
   ],
   callbacks: {
     // 1. Sign In: Logika Ekosistem Tertutup (Gatekeeper)
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile }) {
       if (account.provider === "google") {
         // Cek apakah email sudah terdaftar di database kita
         const existingUser = await prisma.user.findUnique({
           where: { email: user.email },
         });
 
-        // JIKA TIDAK ADA: Lempar error untuk menolak login
+        // JIKA TIDAK ADA: Tendang ke register
         if (!existingUser) {
           console.warn(`[SSO] Blokir login dari email belum terdaftar: ${user.email}`);
-          throw new Error("Akses Ditolak: Anda harus mendaftar terlebih dahulu di halaman /register.");
+          return '/register?error=not_registered';
         }
 
         // JIKA ADA: Izinkan login
@@ -79,7 +80,8 @@ export const authOptions = {
   },
 
   pages: {
-    error: "/auth/login", // Redirect ke login jika error (menangkap error custom di signIn)
+    signIn: '/login',
+    error: '/login', // Redirect ke login jika error
   },
 
   secret: process.env.NEXTAUTH_SECRET,

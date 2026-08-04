@@ -55,6 +55,15 @@ export default function Register() {
             <h1 className="text-3xl font-display font-bold text-title">Daftar Akun</h1>
           </div>
 
+          {router.query.error === 'not_registered' && (
+            <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-sm font-semibold rounded-2xl border border-amber-200 dark:border-amber-800/50 flex items-start gap-3 shadow-sm">
+              <Icon icon="tabler:alert-triangle" className="w-6 h-6 shrink-0 mt-0.5" />
+              <p>
+                Email Anda belum terdaftar. Silakan lengkapi formulir pendaftaran ini terlebih dahulu sebelum bisa masuk menggunakan Google.
+              </p>
+            </div>
+          )}
+
           {success ? (
             <div className="text-center p-6 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl border border-emerald-100 dark:border-emerald-800">
               <Icon icon="tabler:circle-check" className="w-12 h-12 text-emerald-600 dark:text-emerald-400 mx-auto mb-3" />
