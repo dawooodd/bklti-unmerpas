@@ -6,8 +6,9 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log("INCOMING DATA:", req.body);
     const { name, email, nim, prodi } = req.body;
-
+    // ...
     // Validasi input dasar
     if (!name || !email || !nim || !prodi) {
       return res.status(400).json({ message: "Semua field wajib diisi." });
@@ -59,10 +60,13 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "Email atau NIM sudah terdaftar!" });
     }
 
-    // TAHAP 3: Tambahkan log mendetail untuk debugging di Vercel
-    console.error("PRISMA ERROR DETAILS:", error);
+    // TAHAP 2: Super-Logging
+    console.error("🔥 FATAL REGISTER ERROR 🔥:", error);
 
-    // Tangkap error lain (terutama masalah koneksi Neon DB Serverless)
-    return res.status(500).json({ error: error.message });
+    // Kembalikan detail error ke frontend
+    return res.status(500).json({ 
+      error: error.message || 'Error internal server', 
+      details: error.toString() 
+    });
   }
 }

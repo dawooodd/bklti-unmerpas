@@ -32,7 +32,7 @@ export default function Register() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Gagal mendaftar");
+        throw new Error(data.error || data.message || "Terjadi kesalahan yang tidak diketahui");
       }
 
       setSuccess(true);
