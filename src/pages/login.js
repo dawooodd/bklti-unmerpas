@@ -117,7 +117,6 @@ export default function Login() {
 
           <div className="mt-6">
             <button
-              type="button"
               onClick={() => signIn("google", { callbackUrl: "/" })}
               className="w-full py-3.5 bg-white dark:bg-base-800 hover:bg-base-50 dark:hover:bg-base-700 text-title border border-base-200 dark:border-base-700 rounded-xl font-semibold shadow-sm transition-all flex items-center justify-center gap-3"
             >

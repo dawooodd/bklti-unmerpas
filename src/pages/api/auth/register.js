@@ -12,22 +12,45 @@ export default async function handler(req, res) {
   try {
     console.log("INCOMING DATA:", req.body);
     const { name, email, nim, prodi } = req.body;
-    // ...
+    
+    // Bersihkan input
+    const cleanName = name?.trim();
+    const cleanEmail = email?.trim().toLowerCase();
+    const cleanNim = nim?.trim();
+    const cleanProdi = prodi?.trim();
+
     // Validasi input dasar
-    if (!name || !email || !nim || !prodi) {
+    if (!cleanName || !cleanEmail || !cleanNim || !cleanProdi) {
       return res.status(400).json({ message: "Semua field wajib diisi." });
     }
 
     // Validasi format email sederhana
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(cleanEmail)) {
       return res.status(400).json({ message: "Format email tidak valid." });
+    }
+
+    // Cek duplikasi email atau NIM
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: cleanEmail },
+          { nim: cleanNim }
+        ]
+      }
+    });
+
+    if (existingUser) {
+      if (existingUser.email === cleanEmail) {
+        return res.status(400).json({ message: "Email sudah digunakan." });
+      }
+      return res.status(400).json({ message: "NIM sudah terdaftar." });
     }
 
     // TAHAP 3: Logika Bootstrapping Super Admin (Tendik Only)
     let assignedRole = "USER";
 
-    if (prodi === "Tendik (Tenaga Kependidikan)") {
+    if (cleanProdi === "Tendik (Tenaga Kependidikan)") {
       // Cek apakah sudah ada SUPER_ADMIN di database
       const superAdminCount = await prisma.user.count({
         where: { role: "SUPER_ADMIN" },
@@ -36,17 +59,17 @@ export default async function handler(req, res) {
       // Jika belum ada sama sekali, jadikan pendaftar Tendik pertama ini sebagai SUPER_ADMIN
       if (superAdminCount === 0) {
         assignedRole = "SUPER_ADMIN";
-        console.log(`[BOOTSTRAP] Pengguna pertama (Tendik) mendaftar. Diberikan role SUPER_ADMIN: ${email}`);
+        console.log(`[BOOTSTRAP] Pengguna pertama (Tendik) mendaftar. Diberikan role SUPER_ADMIN: ${cleanEmail}`);
       }
     }
 
     // TAHAP 1: Operasi Create dengan Blok try..catch spesifik
     const newUser = await prisma.user.create({
       data: {
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        nim: nim.trim(),
-        prodi: prodi.trim(),
+        name: cleanName,
+        email: cleanEmail,
+        nim: cleanNim,
+        prodi: cleanProdi,
         role: assignedRole,
         adminRequestStatus: "NONE",
       },
