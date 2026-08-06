@@ -385,7 +385,21 @@ export default function HelpdeskPage() {
                           <input
                             ref={fileInputRef}
                             type="file"
-                            accept="image}
+                            accept="image/*"
+                            className="hidden"
+                            onChange={handleFileChange}
+                          />
+                          <div className="w-12 h-12 rounded-full bg-base-100 dark:bg-base-900 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <Icon icon="tabler:upload" className="w-6 h-6 text-primary-500" />
+                          </div>
+                          <div className="text-center">
+                            <p className="text-sm font-medium text-title group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                              {fileName ? fileName : "Klik untuk mengunggah gambar"}
+                            </p>
+                            <p className="text-xs text-muted mt-1">PNG, JPG, max 5MB</p>
+                          </div>
+                        </div>
+                      </div>
                       <div className="pt-2 flex flex-col gap-3">
                         {errorMsg && (
                           <div className="p-3 text-sm text-red-600 bg-red-50 dark:bg-red-900/30 rounded-xl border border-red-200 dark:border-red-800">
