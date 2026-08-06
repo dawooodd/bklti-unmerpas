@@ -26,10 +26,13 @@ export const authOptions = {
           throw new Error("Nama dan NIM wajib diisi.");
         }
 
+        const namaBersih = credentials.nama.trim();
+        const nimBersih = credentials.nim.trim();
+
         const user = await prisma.user.findFirst({
           where: {
-            name: credentials.nama,
-            nim: credentials.nim,
+            name: { equals: namaBersih, mode: "insensitive" },
+            nim: nimBersih,
           },
         });
 
