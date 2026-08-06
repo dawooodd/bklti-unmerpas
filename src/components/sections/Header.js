@@ -29,9 +29,8 @@ export function Header({ logo, links, buttons, className, ...rest }) {
             priority
             className="h-10 w-auto dark:invert"
           />
-          <div className="hidden lg:flex lg:flex-col justify-center">
-            <span className="font-bold text-sm text-title leading-tight">Biro Konsultasi Layanan Teknologi Informasi</span>
-            <span className="text-xs text-muted leading-tight">Universitas Merdeka Pasuruan</span>
+          <div className="hidden lg:flex justify-center">
+            <span className="font-bold text-sm text-title leading-tight">BKLTI Universitas Merdeka Pasuruan</span>
           </div>
         </Link>
         <div

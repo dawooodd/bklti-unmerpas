@@ -32,13 +32,13 @@ export default async function handler(req, res) {
     }
 
     if (action === "APPROVE") {
-      // 1. Cek Kuota Admin (Maksimal 3)
+      
       const adminCount = await prisma.user.count({
         where: { role: "ADMIN" },
       });
 
       if (adminCount >= 3) {
-        // Otomatis tolak jika kuota penuh
+        
         await prisma.user.update({
           where: { id: userId },
           data: { adminRequestStatus: "REJECTED" },
@@ -46,7 +46,6 @@ export default async function handler(req, res) {
         return res.status(403).json({ message: "Gagal: Slot Admin sudah penuh (Maksimal 3). Request ini otomatis ditolak." });
       }
 
-      // 2. Ambil user target
       const targetUser = await prisma.user.findUnique({
         where: { id: userId },
         select: { email: true },
@@ -56,7 +55,6 @@ export default async function handler(req, res) {
         return res.status(404).json({ message: "Pengguna tidak ditemukan." });
       }
 
-      // 3. Validasi Domain Kampus
       if (!isCampusEmail(targetUser.email)) {
         await prisma.user.update({
           where: { id: userId },
@@ -65,7 +63,6 @@ export default async function handler(req, res) {
         return res.status(403).json({ message: "Gagal: Hanya email kampus (@unmerpas.ac.id) yang bisa dijadikan Admin." });
       }
 
-      // 4. Eksekusi Persetujuan
       await prisma.user.update({
         where: { id: userId },
         data: { role: "ADMIN", adminRequestStatus: "APPROVED" },

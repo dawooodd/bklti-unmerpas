@@ -10,7 +10,6 @@ export default async function handler(req, res) {
     });
   }
 
-  // 1. Pengecekan Autentikasi dan Otorisasi (Hanya SUPER_ADMIN)
   const session = await getServerSession(req, res, authOptions);
   if (!session || session.user.role !== "SUPER_ADMIN") {
     return res.status(403).json({
@@ -28,7 +27,6 @@ export default async function handler(req, res) {
     });
   }
 
-  // Hanya boleh assign ke ADMIN atau USER (SUPER_ADMIN tidak bisa ditambah)
   if (newRole !== "ADMIN" && newRole !== "USER") {
     return res.status(400).json({
       success: false,
@@ -36,7 +34,6 @@ export default async function handler(req, res) {
     });
   }
 
-  // Hindari Super Admin mengubah role-nya sendiri
   if (userId === session.user.id) {
     return res.status(403).json({
       success: false,
@@ -45,7 +42,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 2. Logika KUOTA: Maksimal 3 ADMIN
+    
     if (newRole === "ADMIN") {
       const adminCount = await prisma.user.count({
         where: { role: "ADMIN" },
@@ -58,7 +55,6 @@ export default async function handler(req, res) {
         });
       }
 
-      // Validasi domain email kampus sebelum upgrade ke ADMIN
       const targetUser = await prisma.user.findUnique({
         where: { id: userId },
         select: { email: true },
@@ -79,7 +75,6 @@ export default async function handler(req, res) {
       }
     }
 
-    // 3. Eksekusi Update Role
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: { role: newRole },

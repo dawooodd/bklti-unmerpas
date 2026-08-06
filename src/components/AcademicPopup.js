@@ -3,7 +3,6 @@ import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 
-// Ikon berdasarkan tipe notifikasi
 const TYPE_CONFIG = {
   SPP:        { icon: "tabler:credit-card",    color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-100 dark:bg-emerald-900/30", label: "Tagihan SPP" },
   UJIAN:      { icon: "tabler:writing",        color: "text-blue-600 dark:text-blue-400",       bg: "bg-blue-100 dark:bg-blue-900/30",       label: "Jadwal Ujian" },
@@ -20,7 +19,7 @@ export default function AcademicPopup() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Hanya tampilkan untuk user login dengan role USER (Mahasiswa)
+    
     if (status !== "authenticated" || session?.user?.role !== "USER") return;
 
     const fetchNotifications = async () => {
@@ -30,14 +29,13 @@ export default function AcademicPopup() {
 
         if (!json.success || !json.data?.length) return;
 
-        // Filter notifikasi yang belum ditutup (cek localStorage)
         const unseen = json.data.filter((n) => {
           return !localStorage.getItem(`notif_dismissed_${n.id}`);
         });
 
         if (unseen.length > 0) {
           setNotifications(unseen);
-          // Delay kemunculan agar tidak mengganggu loading awal
+          
           setTimeout(() => setIsVisible(true), 1500);
         }
       } catch (error) {
@@ -49,13 +47,12 @@ export default function AcademicPopup() {
   }, [session, status]);
 
   const handleDismiss = () => {
-    // Tandai notifikasi saat ini sebagai sudah dibaca di localStorage
+    
     const current = notifications[currentIndex];
     if (current) {
       localStorage.setItem(`notif_dismissed_${current.id}`, "true");
     }
 
-    // Jika masih ada notifikasi berikutnya, tampilkan
     if (currentIndex < notifications.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
@@ -64,7 +61,7 @@ export default function AcademicPopup() {
   };
 
   const handleDismissAll = () => {
-    // Tandai semua sebagai sudah dibaca
+    
     notifications.forEach((n) => {
       localStorage.setItem(`notif_dismissed_${n.id}`, "true");
     });
@@ -80,7 +77,7 @@ export default function AcademicPopup() {
     <AnimatePresence>
       {isVisible && (
         <>
-          {/* Backdrop */}
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -89,7 +86,6 @@ export default function AcademicPopup() {
             onClick={handleDismiss}
           />
 
-          {/* Modal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -98,7 +94,7 @@ export default function AcademicPopup() {
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
           >
             <div className="bg-white dark:bg-base-900 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden pointer-events-auto">
-              {/* Header */}
+
               <div className="p-6 pb-0">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
@@ -125,7 +121,6 @@ export default function AcademicPopup() {
                 </div>
               </div>
 
-              {/* Body */}
               <div className="p-6">
                 <div className="bg-base-50 dark:bg-base-800/50 p-5 rounded-2xl border border-base-200 dark:border-base-800">
                   <p className="text-title leading-relaxed font-medium">
@@ -139,7 +134,6 @@ export default function AcademicPopup() {
                   </div>
                 </div>
 
-                {/* Counter & Actions */}
                 <div className="mt-5 flex items-center justify-between">
                   <p className="text-xs text-muted">
                     {currentIndex + 1} dari {notifications.length} notifikasi

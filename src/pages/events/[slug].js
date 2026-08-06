@@ -9,7 +9,6 @@ import { Header, Footer } from "@/components/sections";
 import { header, footer } from "@/data";
 import { Icon } from "@iconify/react";
 
-// Data dummy acara (sama dengan index.js — dalam proyek nyata ini akan di-fetch dari API/database)
 const events = [
   {
     slug: "pelatihan-web-part-6",
@@ -156,7 +155,6 @@ export default function EventDetailPage({ event }) {
     }
   };
 
-  // Warna badge kategori
   const categoryColors = {
     Pelatihan:
       "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
@@ -183,15 +181,14 @@ export default function EventDetailPage({ event }) {
         buttons={header.buttons}
       />
 
-      {/* Hero Banner */}
       <section className="relative pt-28 pb-12 px-6 lg:px-8 overflow-hidden">
-        {/* Background gradient */}
+
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-primary-100/60 via-primary-50/30 to-transparent dark:from-primary-900/20 dark:via-primary-950/10 rounded-full blur-3xl" />
         </div>
 
         <div className="max-w-5xl mx-auto">
-          {/* Breadcrumb */}
+
           <nav className="flex items-center gap-2 text-sm text-muted mb-8">
             <Link
               href="/"
@@ -213,7 +210,7 @@ export default function EventDetailPage({ event }) {
           </nav>
 
           <div className="flex flex-col lg:flex-row gap-10">
-            {/* Left: Event Image */}
+
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden aspect-video shadow-lg border border-base-200 dark:border-base-800">
                 <Image
@@ -230,13 +227,11 @@ export default function EventDetailPage({ event }) {
               </div>
             </div>
 
-            {/* Right: Event Info */}
             <div className="lg:w-1/2 flex flex-col gap-5">
               <h1 className="text-3xl lg:text-4xl font-display font-bold text-title leading-tight">
                 {event.title}
               </h1>
 
-              {/* Info Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InfoItem
                   icon="tabler:calendar"
@@ -269,13 +264,12 @@ export default function EventDetailPage({ event }) {
         </div>
       </section>
 
-      {/* Content + Form Section */}
       <section className="px-6 lg:px-8 pb-24">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12">
-            {/* Left: Description & Details */}
+
             <div className="lg:w-1/2 flex flex-col gap-8">
-              {/* Description */}
+
               <div>
                 <h2 className="text-xl font-display font-semibold text-title mb-3">
                   Deskripsi Acara
@@ -285,7 +279,6 @@ export default function EventDetailPage({ event }) {
                 </p>
               </div>
 
-              {/* Requirements */}
               {event.requirements && (
                 <div>
                   <h2 className="text-xl font-display font-semibold text-title mb-3">
@@ -307,7 +300,6 @@ export default function EventDetailPage({ event }) {
                 </div>
               )}
 
-              {/* Benefits */}
               {event.benefits && (
                 <div>
                   <h2 className="text-xl font-display font-semibold text-title mb-3">
@@ -330,7 +322,6 @@ export default function EventDetailPage({ event }) {
               )}
             </div>
 
-            {/* Right: Registration Form */}
             <div className="lg:w-1/2">
               <div className="sticky top-28 bg-white dark:bg-base-900 border border-base-200 dark:border-base-800 rounded-2xl p-8 shadow-lg">
                 {!isSubmitted ? (
@@ -353,7 +344,7 @@ export default function EventDetailPage({ event }) {
                     </div>
 
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                      {/* Nama Lengkap */}
+
                       <div className="flex flex-col gap-1.5">
                         <label
                           htmlFor="nama"
@@ -373,7 +364,6 @@ export default function EventDetailPage({ event }) {
                         />
                       </div>
 
-                      {/* NIM */}
                       <div className="flex flex-col gap-1.5">
                         <label
                           htmlFor="nim"
@@ -393,7 +383,6 @@ export default function EventDetailPage({ event }) {
                         />
                       </div>
 
-                      {/* Asal Instansi / Prodi */}
                       <div className="flex flex-col gap-1.5">
                         <label
                           htmlFor="prodi"
@@ -414,7 +403,6 @@ export default function EventDetailPage({ event }) {
                         />
                       </div>
 
-                      {/* Nomor WhatsApp */}
                       <div className="flex flex-col gap-1.5">
                         <label
                           htmlFor="whatsapp"
@@ -434,7 +422,6 @@ export default function EventDetailPage({ event }) {
                         />
                       </div>
 
-                      {/* Submit Button */}
                       <div className="pt-2 flex flex-col gap-3">
                         {errorMsg && (
                           <div className="p-3 text-sm text-red-600 bg-red-50 dark:bg-red-900/30 rounded-xl border border-red-200 dark:border-red-800">
@@ -461,7 +448,7 @@ export default function EventDetailPage({ event }) {
                     </form>
                   </>
                 ) : (
-                  /* Success State */
+                  
                   <div className="flex flex-col items-center text-center gap-4 py-8">
                     <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
                       <Icon
@@ -507,7 +494,6 @@ export default function EventDetailPage({ event }) {
   );
 }
 
-// Komponen kecil untuk menampilkan info event
 function InfoItem({ icon, label, value }) {
   return (
     <div className="flex items-start gap-3 p-3 rounded-xl bg-base-50 dark:bg-base-800/50 border border-base-100 dark:border-base-800">

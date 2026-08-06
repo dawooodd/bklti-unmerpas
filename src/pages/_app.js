@@ -15,9 +15,11 @@ const body = Inter({
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
-      <main className={`${display.variable} ${body.variable} font-sans`}>
-        <Component {...pageProps} />
-      </main>
+      <ThemeProvider attribute="class">
+        <main className={`${display.variable} ${body.variable} font-sans`}>
+          <Component {...pageProps} />
+        </main>
+      </ThemeProvider>
     </SessionProvider>
   );
 }

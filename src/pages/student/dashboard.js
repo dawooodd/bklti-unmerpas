@@ -5,11 +5,9 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { prisma } from "@/lib/prisma";
 import { Icon } from "@iconify/react";
 
-// ─── getServerSideProps: Hanya Mahasiswa yang bisa akses ──────────────────────
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  // Jika tidak ada session, arahkan ke halaman login
   if (!session) {
     return {
       redirect: {
@@ -19,7 +17,6 @@ export async function getServerSideProps(context) {
     };
   }
 
-  // Jika role bukan USER (mahasiswa), tendang ke homepage
   if (session.user.role !== "USER") {
     return {
       redirect: {
@@ -30,17 +27,16 @@ export async function getServerSideProps(context) {
   }
 
   try {
-    // Ambil notifikasi untuk Mahasiswa (baik spesifik MAHASISWA maupun ALL)
+    
     const rawNotifications = await prisma.notification.findMany({
       where: {
         OR: [{ targetRole: "MAHASISWA" }, { targetRole: "ALL" }],
       },
       orderBy: {
-        createdAt: "desc", // Urutkan dari yang paling baru dikirim
+        createdAt: "desc", 
       },
     });
 
-    // Serialisasi data Date agar tidak error di Next.js SSR
     const notifications = rawNotifications.map((notif) => ({
       ...notif,
       date: notif.date.toISOString(),
@@ -64,9 +60,8 @@ export async function getServerSideProps(context) {
   }
 }
 
-// ─── Halaman Utama ─────────────────────────────────────────────────────────────
 export default function StudentDashboard({ user, notifications }) {
-  // Format tanggal untuk tampilan UI
+  
   const formatDate = (isoString) => {
     return new Date(isoString).toLocaleDateString("id-ID", {
       weekday: "long",
@@ -83,7 +78,6 @@ export default function StudentDashboard({ user, notifications }) {
     });
   };
 
-  // Konfigurasi style dan ikon berdasarkan jenis notifikasi
   const getNotificationConfig = (type) => {
     switch (type) {
       case "SPP":
@@ -139,7 +133,7 @@ export default function StudentDashboard({ user, notifications }) {
       </Head>
 
       <div className="min-h-screen bg-base-50 dark:bg-base-950 flex flex-col">
-        {/* ── Navbar Student ── */}
+
         <header className="bg-white dark:bg-base-900 border-b border-base-200 dark:border-base-800 sticky top-0 z-40">
           <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -163,7 +157,6 @@ export default function StudentDashboard({ user, notifications }) {
           </div>
         </header>
 
-        {/* ── Main Content ── */}
         <main className="flex-1 max-w-4xl mx-auto w-full px-6 py-12">
           
           <div className="mb-10">
@@ -187,7 +180,7 @@ export default function StudentDashboard({ user, notifications }) {
               </div>
             ) : (
               <div className="relative pl-3">
-                {/* Garis vertikal timeline */}
+
                 <div className="absolute top-4 bottom-4 left-6 w-0.5 bg-base-200 dark:bg-base-800"></div>
 
                 <div className="flex flex-col gap-8">
@@ -195,13 +188,11 @@ export default function StudentDashboard({ user, notifications }) {
                     const config = getNotificationConfig(notif.type);
                     return (
                       <div key={notif.id} className="relative flex gap-6 items-start group">
-                        
-                        {/* Ikon bulatan di garis timeline */}
+
                         <div className={`relative z-10 w-7 h-7 shrink-0 rounded-full flex items-center justify-center text-white ring-4 ring-white dark:ring-base-900 ${config.iconBg} shadow-sm mt-0.5`}>
                           <Icon icon={config.icon} className="w-3.5 h-3.5" />
                         </div>
 
-                        {/* Konten Notifikasi */}
                         <div className="flex-1 flex flex-col gap-3 pt-0.5">
                           <div>
                             <div className="flex flex-wrap items-center gap-2 mb-1">
@@ -218,7 +209,6 @@ export default function StudentDashboard({ user, notifications }) {
                             </p>
                           </div>
 
-                          {/* Info Tanggal Pelaksanaan/Deadline */}
                           <div className="inline-flex items-center gap-2 px-3 py-2 bg-base-50 dark:bg-base-950 border border-base-200 dark:border-base-800 rounded-lg w-fit">
                             <Icon icon="tabler:calendar-event" className="w-4 h-4 text-primary-500" />
                             <span className="text-sm font-medium text-title">

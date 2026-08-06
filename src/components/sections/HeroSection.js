@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+
 import { Badge, Button } from "#/base";
 import { Brands } from "#/Brands";
 import { cn } from "@/lib/utils";
@@ -17,11 +17,10 @@ export function HeroSection({
 }) {
   return (
     <section {...rest} className={cn("relative overflow-hidden", rest.className)}>
-      {/* Glowing Orbs */}
+
       <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-blue-500/20 blur-3xl rounded-full mix-blend-screen pointer-events-none -z-10 animate-pulse" />
       <div className="absolute top-1/3 right-1/4 w-[350px] h-[350px] bg-purple-500/20 blur-3xl rounded-full mix-blend-screen pointer-events-none -z-10" />
 
-      {/* Floating Animated Icons */}
       <div className="absolute top-1/3 left-[15%] hidden lg:block opacity-60 animate-bounce" style={{ animationDuration: '3s' }}>
         <Icon icon="tabler:code" className="w-12 h-12 text-primary-500" />
       </div>
@@ -54,8 +53,6 @@ export function HeroSection({
               </div>
             )}
           </div>
-          
-          {/* Static Image Removed as requested */}
 
         </motion.div>
       </div>

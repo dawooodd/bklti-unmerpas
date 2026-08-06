@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 
 export default async function handler(req, res) {
-  // Hanya terima method POST
+  
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
@@ -12,7 +12,6 @@ export default async function handler(req, res) {
   try {
     const { eventSlug, nama, nim, instansi, noWa } = req.body;
 
-    // Validasi: pastikan semua field terisi
     const missingFields = [];
     if (!eventSlug?.trim()) missingFields.push("eventSlug");
     if (!nama?.trim()) missingFields.push("nama");
@@ -31,7 +30,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Simpan ke database via Prisma
     const registration = await prisma.eventRegistration.create({
       data: {
         eventSlug: eventSlug.trim(),

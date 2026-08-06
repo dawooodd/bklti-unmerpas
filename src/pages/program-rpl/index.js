@@ -6,7 +6,6 @@ import { header, footer } from "@/data";
 import { Icon } from "@iconify/react";
 import { cn } from "@/lib/utils";
 
-// Data FAQ khusus RPL
 const rplFaqs = [
   {
     title: "Apakah lulusan RPL mendapat ijazah yang sama?",
@@ -30,7 +29,6 @@ const rplFaqs = [
   },
 ];
 
-// Syarat & Ketentuan
 const requirements = [
   "Warga Negara Indonesia (WNI) dengan usia minimal 25 tahun.",
   "Memiliki ijazah SMA/SMK/sederajat atau Diploma.",
@@ -42,7 +40,6 @@ const requirements = [
   "Membayar biaya pendaftaran dan asesmen sesuai ketentuan.",
 ];
 
-// Keuntungan RPL
 const benefits = [
   {
     icon: "tabler:clock-bolt",
@@ -70,7 +67,6 @@ const benefits = [
   },
 ];
 
-// Alur Pendaftaran
 const registrationSteps = [
   {
     step: 1,
@@ -122,25 +118,23 @@ export default function ProgramRPLPage() {
         buttons={header.buttons}
       />
 
-      {/* ============================================ */}
-      {/* HERO SECTION RPL                             */}
-      {/* ============================================ */}
       <section className="relative overflow-hidden pt-32 pb-20 px-6 lg:px-8">
-        {/* Background Decorative */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-gradient-to-b from-primary-100/70 via-primary-50/30 to-transparent dark:from-primary-900/25 dark:via-primary-950/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tl from-amber-100/40 to-transparent dark:from-amber-900/10 rounded-full blur-3xl" />
+
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 z-[-1] opacity-5 bg-[url('/logo-unmer-watermark.png')] bg-no-repeat bg-center bg-contain md:bg-auto"></div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-gradient-to-b from-primary-100/70 via-primary-50/30 to-transparent dark:from-primary-900/25 dark:via-primary-950/10 rounded-full blur-3xl -z-10" />
+          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tl from-amber-100/40 to-transparent dark:from-amber-900/10 rounded-full blur-3xl -z-10" />
         </div>
 
         <div className="max-w-5xl mx-auto text-center">
-          {/* Badge */}
+
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-950 text-primary-500 dark:text-primary-300 text-sm font-medium mb-6">
             <Icon icon="tabler:award" className="w-5 h-5" />
             PROGRAM RPL — UNIVERSITAS MERDEKA PASURUAN
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-title leading-tight mb-6">
-            Program Perkuliahan{" "}
+            Program Khusus{" "}
             <span className="title-gradient">Jalur RPL</span>
           </h1>
 
@@ -172,13 +166,12 @@ export default function ProgramRPLPage() {
             />
           </div>
 
-          {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-16 max-w-3xl mx-auto">
             {[
-              { value: "500+", label: "Alumni RPL" },
+              { value: "100+", label: "Lulusan Alumni" },
               { value: "2-3", label: "Semester" },
               { value: "95%", label: "Tingkat Kelulusan" },
-              { value: "A", label: "Akreditasi" },
+              { value: "B", label: "Akreditasi" },
             ].map((stat, idx) => (
               <div
                 key={idx}
@@ -194,13 +187,10 @@ export default function ProgramRPLPage() {
         </div>
       </section>
 
-      {/* ============================================ */}
-      {/* APA ITU RPL?                                 */}
-      {/* ============================================ */}
       <section className="px-6 lg:px-8 py-12 lg:py-16 bg-base-50 dark:bg-base-900">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12 items-start">
-            {/* Left: Title */}
+
             <div className="lg:w-5/12 lg:sticky lg:top-28">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-100 dark:bg-primary-950 text-primary-500 text-xs font-semibold mb-4">
                 <Icon icon="tabler:info-circle" className="w-4 h-4" />
@@ -211,7 +201,6 @@ export default function ProgramRPLPage() {
               </h2>
             </div>
 
-            {/* Right: Content */}
             <div className="lg:w-7/12">
               <div className="space-y-5 text-base-600 dark:text-base-400 leading-relaxed">
                 <p>
@@ -242,7 +231,6 @@ export default function ProgramRPLPage() {
                   akademik atas kompetensi yang telah dimiliki.
                 </p>
 
-                {/* Highlight Box */}
                 <div className="p-5 rounded-xl bg-primary-50 dark:bg-primary-950/30 border border-primary-200 dark:border-primary-800/40 mt-6">
                   <div className="flex items-start gap-3">
                     <Icon
@@ -268,9 +256,6 @@ export default function ProgramRPLPage() {
         </div>
       </section>
 
-      {/* ============================================ */}
-      {/* KEUNTUNGAN RPL                               */}
-      {/* ============================================ */}
       <section className="px-6 lg:px-8 py-12 lg:py-16">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
@@ -309,13 +294,10 @@ export default function ProgramRPLPage() {
         </div>
       </section>
 
-      {/* ============================================ */}
-      {/* SYARAT & KETENTUAN                           */}
-      {/* ============================================ */}
       <section className="px-6 lg:px-8 py-12 lg:py-16 bg-base-50 dark:bg-base-900">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-12">
-            {/* Left: Title */}
+
             <div className="lg:w-5/12">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 text-xs font-semibold mb-4">
                 <Icon icon="tabler:list-check" className="w-4 h-4" />
@@ -330,7 +312,6 @@ export default function ProgramRPLPage() {
               </p>
             </div>
 
-            {/* Right: List */}
             <div className="lg:w-7/12">
               <div className="bg-white dark:bg-base-950 rounded-2xl border border-base-200 dark:border-base-800 p-6 sm:p-8">
                 <ul className="space-y-4">
@@ -354,9 +335,6 @@ export default function ProgramRPLPage() {
         </div>
       </section>
 
-      {/* ============================================ */}
-      {/* ALUR PENDAFTARAN                             */}
-      {/* ============================================ */}
       <section id="pendaftaran" className="px-6 lg:px-8 py-12 lg:py-16">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
@@ -373,20 +351,18 @@ export default function ProgramRPLPage() {
             </p>
           </div>
 
-          {/* Timeline */}
           <div className="relative">
-            {/* Connector Line (desktop) */}
+
             <div className="hidden lg:block absolute top-[52px] left-[calc(12.5%+24px)] right-[calc(12.5%+24px)] h-0.5 bg-gradient-to-r from-primary-300 via-primary-400 to-primary-300 dark:from-primary-700 dark:via-primary-600 dark:to-primary-700" />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
               {registrationSteps.map((item, idx) => (
                 <div key={idx} className="relative flex flex-col items-center text-center">
-                  {/* Mobile vertical connector */}
+
                   {idx < registrationSteps.length - 1 && (
                     <div className="lg:hidden absolute top-[104px] left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gradient-to-b from-primary-300 to-primary-100 dark:from-primary-700 dark:to-primary-900" />
                   )}
 
-                  {/* Step Circle */}
                   <div className="relative mb-5">
                     <div className="w-[104px] h-[104px] rounded-3xl bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-950/60 dark:to-primary-900/40 border-2 border-primary-200 dark:border-primary-800 flex items-center justify-center shadow-sm">
                       <Icon
@@ -394,7 +370,7 @@ export default function ProgramRPLPage() {
                         className="w-10 h-10 text-primary-500"
                       />
                     </div>
-                    {/* Step Number */}
+
                     <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary-500 text-white text-sm font-bold flex items-center justify-center shadow-lg shadow-primary-500/30">
                       {item.step}
                     </span>
@@ -411,7 +387,6 @@ export default function ProgramRPLPage() {
             </div>
           </div>
 
-          {/* CTA setelah timeline */}
           <div className="flex justify-center mt-14">
             <Button
               href={waUrl}
@@ -425,13 +400,10 @@ export default function ProgramRPLPage() {
         </div>
       </section>
 
-      {/* ============================================ */}
-      {/* FAQ SECTION                                  */}
-      {/* ============================================ */}
       <FaqSection
         id="faq-rpl"
         title="Pertanyaan Seputar RPL"
-        description="Temukan jawaban atas pertanyaan yang sering diajukan mengenai program RPL di Universitas Mercubuana Yogyakarta."
+        description="Temukan jawaban atas pertanyaan yang sering diajukan mengenai program RPL di Universitas Merdeka Pasuruan."
         buttons={[
           {
             label: "Hubungi Kami",

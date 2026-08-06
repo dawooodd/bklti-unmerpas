@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 export default async function handler(req, res) {
-  // Autentikasi: Hanya ADMIN & SUPER_ADMIN
+  
   const session = await getServerSession(req, res, authOptions);
   if (!session || (session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN")) {
     return res.status(403).json({ success: false, message: "Akses ditolak." });
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   const { method } = req;
 
   try {
-    // ─── GET: Ambil semua modul ─────────────────────────────────────
+    
     if (method === "GET") {
       const modules = await prisma.module.findMany({
         orderBy: { createdAt: "desc" },
@@ -28,7 +28,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true, data: serialized });
     }
 
-    // ─── POST: Upload modul baru ────────────────────────────────────
     if (method === "POST") {
       const { title, description, category, fileUrl, isPublished } = req.body;
 
@@ -53,7 +52,6 @@ export default async function handler(req, res) {
       return res.status(201).json({ success: true, message: "Modul berhasil diunggah.", data: module });
     }
 
-    // ─── PUT: Update modul ──────────────────────────────────────────
     if (method === "PUT") {
       const { id, title, description, category, fileUrl, isPublished } = req.body;
 
@@ -75,7 +73,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true, message: "Modul berhasil diperbarui.", data: module });
     }
 
-    // ─── DELETE: Hapus modul ────────────────────────────────────────
     if (method === "DELETE") {
       const { id } = req.body;
 

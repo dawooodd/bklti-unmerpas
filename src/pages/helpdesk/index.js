@@ -6,7 +6,6 @@ import { Header, Footer } from "@/components/sections";
 import { header, footer } from "@/data";
 import { Icon } from "@iconify/react";
 
-// Kategori layanan helpdesk
 const categories = [
   { value: "", label: "— Pilih Kategori Layanan —" },
   { value: "konsultasi", label: "Konsultasi Skripsi / Tugas Akhir IT" },
@@ -15,7 +14,6 @@ const categories = [
   { value: "lainnya", label: "Lainnya" },
 ];
 
-// Langkah-langkah pengajuan tiket
 const steps = [
   {
     icon: "tabler:pencil",
@@ -43,7 +41,6 @@ const steps = [
   },
 ];
 
-// Jenis layanan yang tersedia
 const services = [
   {
     icon: "tabler:message-chatbot",
@@ -96,7 +93,6 @@ export default function HelpdeskPage() {
     setErrorMsg("");
     setIsSubmitting(true);
 
-    // Validasi field utama terisi
     if (!formData.kategori) {
       setErrorMsg("Harap pilih kategori layanan terlebih dahulu.");
       setIsSubmitting(false);
@@ -109,13 +105,13 @@ export default function HelpdeskPage() {
     }
 
     try {
-      // 1. Simpan ke database via API
+      
       const res = await fetch("/api/helpdesk/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           nama: formData.nama,
-          emailOrNim: formData.email, // API menggunakan emailOrNim
+          emailOrNim: formData.email, 
           kategori: formData.kategori,
           deskripsi: formData.deskripsi,
         }),
@@ -127,19 +123,15 @@ export default function HelpdeskPage() {
         throw new Error(data.message || "Gagal membuat tiket.");
       }
 
-      // 2. Set nomor tiket dari response
       const generatedTicket = data.data.ticketNumber;
       setTicketNumber(generatedTicket);
 
-      // 3. Bangun pesan WhatsApp otomatis dengan nomor tiket
       const kategoriLabel = categories.find((c) => c.value === formData.kategori)?.label || formData.kategori;
       const pesan = `Halo Admin BKLTI, saya ingin konsultasi/meminta bantuan layanan TI terkait: ${kategoriLabel}\n\n*Nomor Tiket:* ${generatedTicket}\n*Detail:* ${formData.deskripsi.trim()}`;
       const waUrl = `https://wa.me/6283833504040?text=${encodeURIComponent(pesan)}`;
 
-      // Tampilkan alert sukses sebelum beralih ke WhatsApp
       alert(`Tiket berhasil dibuat dengan nomor: ${generatedTicket}\n\nMenghubungkan ke WhatsApp Admin BKLTI...`);
 
-      // Buka WhatsApp
       window.open(waUrl, "_blank", "noopener,noreferrer");
       setIsSubmitted(true);
     } catch (error) {
@@ -171,7 +163,6 @@ export default function HelpdeskPage() {
         buttons={header.buttons}
       />
 
-      {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-16 px-6 lg:px-8">
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-b from-primary-100/60 via-primary-50/30 to-transparent dark:from-primary-900/20 dark:via-primary-950/10 rounded-full blur-3xl" />
@@ -189,13 +180,12 @@ export default function HelpdeskPage() {
         </div>
       </section>
 
-      {/* Two-column: Info + Form */}
       <section className="px-6 lg:px-8 pb-12">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-10">
-            {/* ====== KOLOM KIRI: Informasi ====== */}
+
             <div className="lg:w-5/12 flex flex-col gap-8">
-              {/* Layanan Tersedia */}
+
               <div>
                 <h2 className="text-xl font-display font-semibold text-title mb-1">
                   Layanan yang Tersedia
@@ -228,7 +218,6 @@ export default function HelpdeskPage() {
                 </div>
               </div>
 
-              {/* Info Box */}
               <div className="p-5 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40">
                 <div className="flex items-start gap-3">
                   <Icon
@@ -258,12 +247,11 @@ export default function HelpdeskPage() {
               </div>
             </div>
 
-            {/* ====== KOLOM KANAN: Form Tiket ====== */}
             <div className="lg:w-7/12">
               <div className="bg-white dark:bg-base-900 border border-base-200 dark:border-base-800 rounded-2xl p-8 shadow-lg">
                 {!isSubmitted ? (
                   <>
-                    {/* Form Header */}
+
                     <div className="flex items-center gap-3 mb-8">
                       <div className="w-11 h-11 rounded-xl bg-primary-100 dark:bg-primary-900/40 flex items-center justify-center">
                         <Icon
@@ -285,9 +273,9 @@ export default function HelpdeskPage() {
                       onSubmit={handleSubmit}
                       className="flex flex-col gap-5"
                     >
-                      {/* Row: Nama + Email/NIM */}
+
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        {/* Nama Lengkap */}
+
                         <div className="flex flex-col gap-1.5">
                           <label
                             htmlFor="hd-nama"
@@ -308,7 +296,6 @@ export default function HelpdeskPage() {
                           />
                         </div>
 
-                        {/* Email / NIM */}
                         <div className="flex flex-col gap-1.5">
                           <label
                             htmlFor="hd-email"
@@ -330,7 +317,6 @@ export default function HelpdeskPage() {
                         </div>
                       </div>
 
-                      {/* Kategori Layanan */}
                       <div className="flex flex-col gap-1.5">
                         <label
                           htmlFor="hd-kategori"
@@ -361,7 +347,6 @@ export default function HelpdeskPage() {
                         </div>
                       </div>
 
-                      {/* Deskripsi Masalah */}
                       <div className="flex flex-col gap-1.5">
                         <label
                           htmlFor="hd-deskripsi"
@@ -386,7 +371,6 @@ export default function HelpdeskPage() {
                         </p>
                       </div>
 
-                      {/* Upload File */}
                       <div className="flex flex-col gap-1.5">
                         <label className="text-sm font-medium text-title">
                           Lampiran Screenshot{" "}
@@ -401,49 +385,7 @@ export default function HelpdeskPage() {
                           <input
                             ref={fileInputRef}
                             type="file"
-                            accept="image/*,.pdf"
-                            onChange={handleFileChange}
-                            className="hidden"
-                          />
-                          {fileName ? (
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
-                                <Icon
-                                  icon="tabler:file-check"
-                                  className="w-5 h-5 text-emerald-500"
-                                />
-                              </div>
-                              <div>
-                                <p className="text-sm font-medium text-title">
-                                  {fileName}
-                                </p>
-                                <p className="text-xs text-emerald-600 dark:text-emerald-400">
-                                  File berhasil dipilih — klik untuk mengganti
-                                </p>
-                              </div>
-                            </div>
-                          ) : (
-                            <>
-                              <div className="w-12 h-12 rounded-full bg-base-100 dark:bg-base-800 flex items-center justify-center group-hover:bg-primary-100 dark:group-hover:bg-primary-900/40 transition-colors duration-200">
-                                <Icon
-                                  icon="tabler:cloud-upload"
-                                  className="w-6 h-6 text-base-400 group-hover:text-primary-500 transition-colors duration-200"
-                                />
-                              </div>
-                              <div className="text-center">
-                                <p className="text-sm text-title font-medium">
-                                  Klik untuk upload file
-                                </p>
-                                <p className="text-xs text-muted mt-0.5">
-                                  PNG, JPG, atau PDF (maks. 5MB)
-                                </p>
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Submit */}
+                            accept="image}
                       <div className="pt-2 flex flex-col gap-3">
                         {errorMsg && (
                           <div className="p-3 text-sm text-red-600 bg-red-50 dark:bg-red-900/30 rounded-xl border border-red-200 dark:border-red-800">
@@ -466,7 +408,7 @@ export default function HelpdeskPage() {
                     </form>
                   </>
                 ) : (
-                  /* ===== Success State ===== */
+                  
                   <div className="flex flex-col items-center text-center gap-5 py-10">
                     <div className="relative">
                       <div className="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
@@ -494,7 +436,6 @@ export default function HelpdeskPage() {
                       </p>
                     </div>
 
-                    {/* Ticket Number */}
                     <div className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-base-50 dark:bg-base-800 border border-base-200 dark:border-base-700">
                       <Icon
                         icon="tabler:hash"
@@ -532,7 +473,6 @@ export default function HelpdeskPage() {
         </div>
       </section>
 
-      {/* How It Works */}
       <section className="px-6 lg:px-8 pb-24">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-display font-semibold text-title text-center mb-10">
@@ -541,11 +481,11 @@ export default function HelpdeskPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {steps.map((step, idx) => (
               <div key={idx} className="relative flex flex-col items-center text-center gap-4 p-6">
-                {/* Connector line (desktop) */}
+
                 {idx < steps.length - 1 && (
                   <div className="hidden lg:block absolute top-10 left-[calc(50%+28px)] w-[calc(100%-56px)] h-px bg-gradient-to-r from-primary-300 to-primary-100 dark:from-primary-700 dark:to-primary-900" />
                 )}
-                {/* Step Number + Icon */}
+
                 <div className="relative">
                   <div className="w-14 h-14 rounded-2xl bg-primary-100 dark:bg-primary-900/40 flex items-center justify-center">
                     <Icon

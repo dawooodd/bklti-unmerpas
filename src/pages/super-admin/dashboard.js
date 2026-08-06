@@ -83,7 +83,7 @@ export default function SuperAdminDashboard({ sessionUser, stats }) {
       </Head>
 
       <div className="min-h-screen bg-base-50 dark:bg-base-950">
-        {/* Header */}
+
         <header className="border-b border-base-200 dark:border-base-800 bg-white dark:bg-base-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -103,7 +103,7 @@ export default function SuperAdminDashboard({ sessionUser, stats }) {
         </header>
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-          {/* Stat Cards */}
+
           <section>
             <h2 className="text-lg font-display font-semibold text-title mb-4">Ringkasan Sistem</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -125,7 +125,6 @@ export default function SuperAdminDashboard({ sessionUser, stats }) {
             </div>
           </section>
 
-          {/* Quick Links */}
           <section>
             <h2 className="text-lg font-display font-semibold text-title mb-4">Akses Cepat</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -152,7 +151,6 @@ export default function SuperAdminDashboard({ sessionUser, stats }) {
             </div>
           </section>
 
-          {/* Role Quota Info */}
           <section className="bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 p-6">
             <h2 className="text-lg font-display font-semibold text-title mb-3">Kebijakan Kuota Role</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

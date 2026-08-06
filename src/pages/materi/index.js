@@ -5,7 +5,6 @@ import { Header, Footer } from "@/components/sections";
 import { header, footer } from "@/data";
 import { Icon } from "@iconify/react";
 
-// Data dummy materi/dokumen BKLTI
 const materials = [
   {
     id: 1,
@@ -69,7 +68,6 @@ const materials = [
   },
 ];
 
-// Ikon file berdasarkan tipe
 const fileTypeConfig = {
   PDF: {
     icon: "tabler:file-type-pdf",
@@ -105,7 +103,6 @@ export default function MateriPage() {
         buttons={header.buttons}
       />
 
-      {/* Hero Section */}
       <section className="relative overflow-hidden pt-32 pb-16 px-6 lg:px-8">
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-b from-primary-100/60 via-primary-50/30 to-transparent dark:from-primary-900/20 dark:via-primary-950/10 rounded-full blur-3xl" />
@@ -124,7 +121,6 @@ export default function MateriPage() {
         </div>
       </section>
 
-      {/* Stats Bar */}
       <section className="px-6 lg:px-8 pb-8">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-base-50 dark:bg-base-900 border border-base-200 dark:border-base-800">
@@ -151,11 +147,10 @@ export default function MateriPage() {
         </div>
       </section>
 
-      {/* Material List */}
       <section className="px-6 lg:px-8 pb-24">
         <div className="max-w-5xl mx-auto">
           <div className="bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 shadow-sm overflow-hidden">
-            {/* Table Header (desktop) */}
+
             <div className="hidden md:grid md:grid-cols-12 gap-4 px-6 py-3 bg-base-50 dark:bg-base-800/50 border-b border-base-200 dark:border-base-800 text-xs font-semibold text-muted uppercase tracking-wider">
               <div className="col-span-5">Judul Materi</div>
               <div className="col-span-2">Kategori</div>
@@ -164,7 +159,6 @@ export default function MateriPage() {
               <div className="col-span-2 text-right">Aksi</div>
             </div>
 
-            {/* Rows */}
             <ul className="divide-y divide-base-100 dark:divide-base-800">
               {materials.map((item) => {
                 const ftConfig = fileTypeConfig[item.fileType] || {
@@ -178,7 +172,7 @@ export default function MateriPage() {
                     key={item.id}
                     className="group grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 items-center px-6 py-5 hover:bg-base-50 dark:hover:bg-base-800/40 transition-colors duration-200"
                   >
-                    {/* Title + Icon */}
+
                     <div className="md:col-span-5 flex items-center gap-4">
                       <div
                         className={`shrink-0 w-11 h-11 rounded-xl ${ftConfig.bg} flex items-center justify-center`}
@@ -199,7 +193,6 @@ export default function MateriPage() {
                       </div>
                     </div>
 
-                    {/* Category Badge */}
                     <div className="md:col-span-2 hidden md:flex">
                       <Badge
                         label={item.category}
@@ -209,7 +202,6 @@ export default function MateriPage() {
                       />
                     </div>
 
-                    {/* Upload Date */}
                     <div className="md:col-span-2 hidden md:flex items-center gap-2 text-sm text-muted">
                       <Icon
                         icon="tabler:calendar"
@@ -218,12 +210,10 @@ export default function MateriPage() {
                       <span>{item.uploadDate}</span>
                     </div>
 
-                    {/* File Size */}
                     <div className="md:col-span-1 hidden md:flex items-center text-sm text-muted">
                       {item.fileSize}
                     </div>
 
-                    {/* Download Button */}
                     <div className="md:col-span-2 flex md:justify-end">
                       <Button
                         href={item.downloadUrl}
@@ -238,7 +228,6 @@ export default function MateriPage() {
                       />
                     </div>
 
-                    {/* Mobile-only: Category Badge */}
                     <div className="md:hidden flex items-center gap-2">
                       <Badge
                         label={item.category}
@@ -252,7 +241,6 @@ export default function MateriPage() {
               })}
             </ul>
 
-            {/* Footer */}
             <div className="flex items-center justify-between px-6 py-4 bg-base-50 dark:bg-base-800/50 border-t border-base-200 dark:border-base-800">
               <p className="text-xs text-muted">
                 Menampilkan {materials.length} dari {materials.length} dokumen
@@ -277,7 +265,6 @@ export default function MateriPage() {
   );
 }
 
-// Komponen kecil untuk stat items
 function StatItem({ icon, value, label }) {
   return (
     <div className="flex items-center gap-3">

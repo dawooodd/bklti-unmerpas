@@ -7,7 +7,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ success: false, message: "Method tidak diizinkan." });
   }
 
-  // Cek session — hanya user yang login bisa melihat notifikasi
   const session = await getServerSession(req, res, authOptions);
   if (!session) {
     return res.status(401).json({ success: false, message: "Silakan login terlebih dahulu." });
@@ -16,8 +15,6 @@ export default async function handler(req, res) {
   try {
     const userRole = session.user.role || "USER";
 
-    // Ambil notifikasi yang relevan untuk user ini
-    // targetRole "ALL" → semua user | "MAHASISWA" → hanya role USER
     const notifications = await prisma.notification.findMany({
       where: {
         OR: [

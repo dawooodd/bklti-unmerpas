@@ -9,7 +9,6 @@ import { Icon } from "@iconify/react";
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  // Jika tidak ada session, arahkan ke login
   if (!session) {
     return {
       redirect: {
@@ -19,7 +18,6 @@ export async function getServerSideProps(context) {
     };
   }
 
-  // Jika role adalah ADMIN atau SUPER_ADMIN, tidak perlu onboarding mahasiswa
   if (session.user.role === "ADMIN" || session.user.role === "SUPER_ADMIN") {
     return {
       redirect: {
@@ -29,7 +27,6 @@ export async function getServerSideProps(context) {
     };
   }
 
-  // Jika sudah punya NIM dan Prodi, lewati onboarding
   if (session.user.nim && session.user.prodi) {
     return {
       redirect: {
@@ -87,13 +84,12 @@ export default function OnboardingPage({ user }) {
       const data = await res.json();
 
       if (res.ok) {
-        // Trigger NextAuth untuk mengupdate session JWT di browser
+        
         await update({
           nim: formData.nim.trim(),
           prodi: formData.prodi.trim(),
         });
-        
-        // Redirect ke dashboard mahasiswa
+
         router.push("/student/dashboard");
       } else {
         setError(data.message || "Gagal melengkapi profil. Silakan coba lagi.");
@@ -127,8 +123,7 @@ export default function OnboardingPage({ user }) {
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white dark:bg-base-900 py-8 px-6 sm:px-10 shadow-xl border border-base-200 dark:border-base-800 rounded-3xl">
             <form className="space-y-6" onSubmit={handleSubmit}>
-              
-              {/* Alert Error */}
+
               {error && (
                 <div className="p-4 rounded-xl bg-red-50 text-red-700 border border-red-200 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400 flex items-start gap-3">
                   <Icon icon="tabler:alert-triangle" className="w-5 h-5 shrink-0 mt-0.5" />
@@ -136,7 +131,6 @@ export default function OnboardingPage({ user }) {
                 </div>
               )}
 
-              {/* Input NIM */}
               <div>
                 <label htmlFor="nim" className="block text-sm font-semibold text-title mb-2">
                   Nomor Induk Mahasiswa (NIM) <span className="text-red-500">*</span>
@@ -158,7 +152,6 @@ export default function OnboardingPage({ user }) {
                 </div>
               </div>
 
-              {/* Dropdown Program Studi */}
               <div>
                 <label htmlFor="prodi" className="block text-sm font-semibold text-title mb-2">
                   Program Studi <span className="text-red-500">*</span>
@@ -188,7 +181,6 @@ export default function OnboardingPage({ user }) {
                 </div>
               </div>
 
-              {/* Submit Button */}
               <div className="pt-2">
                 <button
                   type="submit"

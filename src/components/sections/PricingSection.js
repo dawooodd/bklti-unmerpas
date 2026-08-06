@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+
 import React from "react";
 import { SectionHeading } from "#/SectionHeading";
 import { Tabs } from "#/base";

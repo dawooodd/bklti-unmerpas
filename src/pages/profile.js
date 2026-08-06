@@ -45,7 +45,7 @@ export default function Profile() {
       if (!res.ok) throw new Error(data.message);
 
       setMessage({ type: "success", text: "Profil berhasil diperbarui." });
-      // Update session frontend
+      
       await update({ name: form.name, email: form.email });
     } catch (err) {
       setMessage({ type: "error", text: err.message });
@@ -71,7 +71,7 @@ export default function Profile() {
       if (!res.ok) throw new Error(data.message);
 
       setMessage({ type: "success", text: "Pengajuan Admin berhasil dikirim. Menunggu persetujuan." });
-      // Update session frontend
+      
       await update({ adminRequestStatus: "PENDING" });
     } catch (err) {
       setMessage({ type: "error", text: err.message });
@@ -102,7 +102,7 @@ export default function Profile() {
         </header>
 
         <main className="max-w-4xl mx-auto px-4 mt-8 space-y-6">
-          {/* Status Bar */}
+
           <div className="bg-white dark:bg-base-900 rounded-2xl p-6 border border-base-200 dark:border-base-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center overflow-hidden">
@@ -131,7 +131,7 @@ export default function Profile() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Form Ubah Profil */}
+
             <div className="lg:col-span-2 bg-white dark:bg-base-900 rounded-2xl p-6 border border-base-200 dark:border-base-800 shadow-sm">
               <h3 className="text-lg font-display font-bold text-title mb-5">Pengaturan Akun</h3>
               
@@ -185,7 +185,6 @@ export default function Profile() {
               </form>
             </div>
 
-            {/* Request Admin Panel */}
             <div className="bg-white dark:bg-base-900 rounded-2xl p-6 border border-base-200 dark:border-base-800 shadow-sm h-fit">
               <h3 className="text-lg font-display font-bold text-title mb-2">Akses Admin</h3>
               <p className="text-sm text-muted mb-5 leading-relaxed">

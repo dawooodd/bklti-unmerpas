@@ -6,28 +6,23 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { prisma } from "@/lib/prisma";
 import { Icon } from "@iconify/react";
 
-// ─── getServerSideProps: Hanya Admin yang bisa akses ──────────────────────────
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  // Redirect ke login jika tidak ada sesi
   if (!session) {
     return { redirect: { destination: "/auth/login?callbackUrl=/admin/content-manager", permanent: false } };
   }
 
-  // Redirect ke beranda jika bukan ADMIN atau SUPER_ADMIN
   if (session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN") {
     return { redirect: { destination: "/", permanent: false } };
   }
 
-  // Fetch semua data yang dibutuhkan
   const [rawEvents, rawDocuments, rawActivities] = await Promise.all([
     prisma.eventRegistration.findMany({ orderBy: { createdAt: "desc" } }),
     prisma.document.findMany({ orderBy: { createdAt: "desc" } }),
     prisma.helpdeskTicket.findMany({ orderBy: { createdAt: "desc" }, take: 20 }),
   ]);
 
-  // Serialisasi Date ke string
   const serialize = (arr) =>
     arr.map((item) => ({
       ...item,
@@ -44,7 +39,6 @@ export async function getServerSideProps(context) {
   };
 }
 
-// ─── Komponen Tambah Event Form ────────────────────────────────────────────────
 function AddEventForm({ onClose, onSuccess }) {
   const [form, setForm] = useState({ eventSlug: "", nama: "", nim: "", instansi: "", noWa: "" });
   const [loading, setLoading] = useState(false);
@@ -107,7 +101,6 @@ function AddEventForm({ onClose, onSuccess }) {
   );
 }
 
-// ─── Komponen Tambah Dokumen Form ──────────────────────────────────────────────
 function AddDocumentForm({ onClose, onSuccess }) {
   const [form, setForm] = useState({ title: "", category: "", fileUrl: "" });
   const [loading, setLoading] = useState(false);
@@ -168,7 +161,6 @@ function AddDocumentForm({ onClose, onSuccess }) {
   );
 }
 
-// ─── Komponen Tabel Generic ────────────────────────────────────────────────────
 function DataTable({ columns, rows, onDelete, deletingId }) {
   if (rows.length === 0) {
     return (
@@ -215,13 +207,11 @@ function DataTable({ columns, rows, onDelete, deletingId }) {
   );
 }
 
-// ─── Halaman Utama ─────────────────────────────────────────────────────────────
 export default function ContentManagerPage({ user, events: initialEvents, documents: initialDocuments, tickets: initialTickets }) {
   const [activeTab, setActiveTab] = useState("events");
   const [showForm, setShowForm] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
 
-  // State data lokal (akan diperbarui setelah add/delete tanpa full reload)
   const [events, setEvents] = useState(initialEvents);
   const [documents, setDocuments] = useState(initialDocuments);
   const [tickets, setTickets] = useState(initialTickets);
@@ -229,7 +219,6 @@ export default function ContentManagerPage({ user, events: initialEvents, docume
   const formatDate = (iso) =>
     new Date(iso).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
 
-  // ── Handler Delete ──────────────────────────────────────────────────────────
   const handleDelete = async (type, id) => {
     if (!confirm("Yakin ingin menghapus data ini?")) return;
     setDeletingId(id);
@@ -256,10 +245,8 @@ export default function ContentManagerPage({ user, events: initialEvents, docume
     }
   };
 
-  // ── Refresh data setelah tambah baru ────────────────────────────────────────
   const handleSuccess = () => window.location.reload();
 
-  // ── Konfigurasi Kolom Tabel ─────────────────────────────────────────────────
   const eventColumns = [
     { key: "nama",      label: "Nama Peserta" },
     { key: "nim",       label: "NIM" },
@@ -305,7 +292,7 @@ export default function ContentManagerPage({ user, events: initialEvents, docume
       </Head>
 
       <div className="min-h-screen bg-base-50 dark:bg-base-950 flex flex-col">
-        {/* Navbar */}
+
         <header className="bg-white dark:bg-base-900 border-b border-base-200 dark:border-base-800 sticky top-0 z-40">
           <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -329,9 +316,8 @@ export default function ContentManagerPage({ user, events: initialEvents, docume
           </div>
         </header>
 
-        {/* Main */}
         <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
-          {/* Page Header */}
+
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-display font-bold text-title">Manajemen Konten</h1>
@@ -346,7 +332,6 @@ export default function ContentManagerPage({ user, events: initialEvents, docume
             </button>
           </div>
 
-          {/* Tabs */}
           <div className="flex gap-1 p-1 bg-base-100 dark:bg-base-800/50 rounded-2xl mb-6 w-fit">
             {tabs.map((tab) => (
               <button
@@ -369,7 +354,6 @@ export default function ContentManagerPage({ user, events: initialEvents, docume
             ))}
           </div>
 
-          {/* Tab Content Panel */}
           <div className="bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 shadow-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-base-200 dark:border-base-800 flex items-center gap-3">
               <Icon icon={tabs.find((t) => t.key === activeTab)?.icon} className="w-5 h-5 text-primary-500" />
@@ -393,7 +377,6 @@ export default function ContentManagerPage({ user, events: initialEvents, docume
         </main>
       </div>
 
-      {/* Modal Form Tambah Baru */}
       {showForm && activeTab === "events" && (
         <AddEventForm onClose={() => setShowForm(false)} onSuccess={handleSuccess} />
       )}

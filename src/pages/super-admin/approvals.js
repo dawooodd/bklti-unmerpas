@@ -13,13 +13,11 @@ export async function getServerSideProps(context) {
     return { redirect: { destination: "/", permanent: false } };
   }
 
-  // Ambil user yang berstatus PENDING (ingin jadi admin)
   const pendingUsers = await prisma.user.findMany({
     where: { adminRequestStatus: "PENDING" },
     orderBy: { createdAt: "desc" },
   });
 
-  // Serialisasi data
   const serializedUsers = pendingUsers.map((u) => ({
     ...u,
     createdAt: u.createdAt.toISOString(),
@@ -39,7 +37,7 @@ export default function ApprovalsPage({ users }) {
   const [message, setMessage] = useState({ type: "", text: "" });
 
   const handleRequest = async (userId, action) => {
-    // Confirm action
+    
     const actionText = action === "APPROVE" ? "menyetujui" : action === "REJECT" ? "menolak" : "menghapus";
     if (!confirm(`Apakah Anda yakin ingin ${actionText} pengguna ini?`)) return;
 
@@ -60,7 +58,7 @@ export default function ApprovalsPage({ users }) {
       }
 
       setMessage({ type: "success", text: data.message });
-      // Hapus user dari list jika di-approve, di-reject, atau di-delete
+      
       setUserList(userList.filter((u) => u.id !== userId));
 
     } catch (err) {

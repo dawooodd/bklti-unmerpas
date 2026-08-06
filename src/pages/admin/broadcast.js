@@ -5,7 +5,6 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { Icon } from "@iconify/react";
 
-// ─── getServerSideProps: Hanya Admin yang bisa akses ──────────────────────────
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
 
@@ -34,7 +33,6 @@ export async function getServerSideProps(context) {
   };
 }
 
-// ─── Halaman Utama ─────────────────────────────────────────────────────────────
 export default function BroadcastPage({ user }) {
   const [formData, setFormData] = useState({
     type: "",
@@ -75,7 +73,7 @@ export default function BroadcastPage({ user }) {
 
       if (res.ok) {
         setStatus({ type: "success", message: data.message });
-        setFormData({ type: "", date: "", message: "" }); // Reset form
+        setFormData({ type: "", date: "", message: "" }); 
       } else {
         setStatus({ type: "error", message: data.message || "Gagal mengirim broadcast." });
       }
@@ -93,7 +91,7 @@ export default function BroadcastPage({ user }) {
       </Head>
 
       <div className="min-h-screen bg-base-50 dark:bg-base-950 flex flex-col">
-        {/* Navbar Admin */}
+
         <header className="bg-white dark:bg-base-900 border-b border-base-200 dark:border-base-800 sticky top-0 z-40">
           <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -116,7 +114,6 @@ export default function BroadcastPage({ user }) {
           </div>
         </header>
 
-        {/* Main Content */}
         <main className="flex-1 max-w-3xl mx-auto w-full px-6 py-12">
           
           <div className="mb-8 text-center">
@@ -126,8 +123,7 @@ export default function BroadcastPage({ user }) {
 
           <div className="bg-white dark:bg-base-900 rounded-3xl border border-base-200 dark:border-base-800 shadow-xl overflow-hidden p-8 sm:p-10">
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-              
-              {/* Pesan Status */}
+
               {status.message && (
                 <div className={`p-4 rounded-xl flex items-start gap-3 border ${
                   status.type === "success" 
@@ -142,7 +138,6 @@ export default function BroadcastPage({ user }) {
                 </div>
               )}
 
-              {/* Jenis Notifikasi */}
               <div className="flex flex-col gap-2">
                 <label htmlFor="type" className="text-sm font-semibold text-title">Jenis Notifikasi <span className="text-red-500">*</span></label>
                 <div className="relative">
@@ -168,7 +163,6 @@ export default function BroadcastPage({ user }) {
                 </div>
               </div>
 
-              {/* Tanggal Pelaksanaan / Deadline */}
               <div className="flex flex-col gap-2">
                 <label htmlFor="date" className="text-sm font-semibold text-title">Tanggal Pelaksanaan / Deadline <span className="text-red-500">*</span></label>
                 <div className="relative">
@@ -187,7 +181,6 @@ export default function BroadcastPage({ user }) {
                 </div>
               </div>
 
-              {/* Pesan Pengumuman */}
               <div className="flex flex-col gap-2">
                 <label htmlFor="message" className="text-sm font-semibold text-title">Pesan Pengumuman <span className="text-red-500">*</span></label>
                 <textarea
@@ -203,7 +196,6 @@ export default function BroadcastPage({ user }) {
                 <p className="text-xs text-muted text-right">Maksimal 500 karakter.</p>
               </div>
 
-              {/* Tombol Submit */}
               <div className="pt-4">
                 <button
                   type="submit"

@@ -17,18 +17,14 @@ export async function getServerSideProps(context) {
     };
   }
 
-  // Ambil data pendaftaran event, urutkan dari yang terbaru
   const rawEvents = await prisma.eventRegistration.findMany({
     orderBy: { createdAt: "desc" },
   });
 
-  // Ambil data tiket helpdesk, urutkan dari yang terbaru
   const rawTickets = await prisma.helpdeskTicket.findMany({
     orderBy: { createdAt: "desc" },
   });
 
-  // Serialization: Next.js getServerSideProps tidak bisa mengirim Date object secara langsung.
-  // Harus dikonversi menjadi string terlebih dahulu.
   const eventRegistrations = rawEvents.map((item) => ({
     ...item,
     createdAt: item.createdAt.toISOString(),
@@ -48,7 +44,7 @@ export async function getServerSideProps(context) {
 }
 
 export default function AdminDashboard({ eventRegistrations, helpdeskTickets }) {
-  // Helper untuk format tanggal
+  
   const formatDate = (dateString) => {
     const options = {
       day: "numeric",
@@ -60,7 +56,6 @@ export default function AdminDashboard({ eventRegistrations, helpdeskTickets }) 
     return new Date(dateString).toLocaleDateString("id-ID", options);
   };
 
-  // Helper untuk warna status tiket
   const getStatusBadge = (status) => {
     switch (status.toUpperCase()) {
       case "PENDING":
@@ -81,7 +76,7 @@ export default function AdminDashboard({ eventRegistrations, helpdeskTickets }) 
       </Head>
 
       <div className="min-h-screen bg-base-50 dark:bg-base-950 flex flex-col">
-        {/* Simple Admin Navbar */}
+
         <header className="bg-white dark:bg-base-900 border-b border-base-200 dark:border-base-800 sticky top-0 z-40">
           <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -102,16 +97,13 @@ export default function AdminDashboard({ eventRegistrations, helpdeskTickets }) 
           </div>
         </header>
 
-        {/* Main Content */}
         <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-8 flex flex-col gap-10">
-          
-          {/* Header Dashboard */}
+
           <div>
             <h1 className="text-2xl font-display font-bold text-title">Dashboard Overview</h1>
             <p className="text-sm text-muted mt-1">Pantau data pendaftaran acara dan tiket helpdesk terbaru.</p>
           </div>
 
-          {/* Section: Event Registrations */}
           <section className="bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 shadow-sm overflow-hidden flex flex-col">
             <div className="p-6 border-b border-base-200 dark:border-base-800 flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -161,7 +153,6 @@ export default function AdminDashboard({ eventRegistrations, helpdeskTickets }) 
             </div>
           </section>
 
-          {/* Section: Helpdesk Tickets */}
           <section className="bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 shadow-sm overflow-hidden flex flex-col">
             <div className="p-6 border-b border-base-200 dark:border-base-800 flex items-center justify-between">
               <div className="flex items-center gap-3">

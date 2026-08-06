@@ -9,13 +9,13 @@ function generateTicketNumber() {
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
-  const random = Math.random().toString(36).substring(2, 6); // 4 karakter alfanumerik
+  const random = Math.random().toString(36).substring(2, 6); 
 
   return `TIK-${year}${month}${day}-${random}`;
 }
 
 export default async function handler(req, res) {
-  // Hanya terima method POST
+  
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
@@ -26,7 +26,6 @@ export default async function handler(req, res) {
   try {
     const { nama, emailOrNim, kategori, deskripsi } = req.body;
 
-    // Validasi: pastikan semua field terisi
     const missingFields = [];
     if (!nama?.trim()) missingFields.push("nama");
     if (!emailOrNim?.trim()) missingFields.push("emailOrNim");
@@ -44,7 +43,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Validasi kategori
     const validCategories = ["konsultasi", "perbaikan", "jaringan", "lainnya"];
     if (!validCategories.includes(kategori.trim().toLowerCase())) {
       return res.status(400).json({
@@ -53,7 +51,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Generate nomor tiket unik (retry jika collision)
     let ticketNumber;
     let isUnique = false;
     let attempts = 0;
@@ -74,7 +71,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Simpan ke database via Prisma
     const ticket = await prisma.helpdeskTicket.create({
       data: {
         ticketNumber,

@@ -4,7 +4,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 
-// Domain email kampus yang memiliki hak istimewa (bisa dijadikan ADMIN)
 const CAMPUS_DOMAINS = ["@unmerpas.ac.id"];
 
 export const authOptions = {
@@ -29,7 +28,6 @@ export const authOptions = {
         const identifier = credentials.identifier.trim();
         const password = credentials.password;
 
-        // Cari berdasarkan NIM atau Email
         const user = await prisma.user.findFirst({
           where: {
             OR: [
@@ -43,18 +41,16 @@ export const authOptions = {
           throw new Error("Akun tidak ditemukan. Silakan daftar terlebih dahulu.");
         }
 
-        // Cek apakah akun sedang terkunci
         if (user.lockoutUntil && new Date() < user.lockoutUntil) {
           const secondsLeft = Math.ceil((user.lockoutUntil - new Date()) / 1000);
           throw new Error(`Akun terkunci sementara. Coba lagi dalam ${secondsLeft} detik.`);
         }
 
-        // Komparasi Password
         const bcrypt = require("bcryptjs");
         const isPasswordValid = await bcrypt.compare(password, user.password || "");
 
         if (!isPasswordValid) {
-          // Logika Brute Force
+          
           const newFailedLogins = user.failedLogins + 1;
           let newLockoutUntil = null;
 
@@ -77,7 +73,6 @@ export const authOptions = {
           throw new Error("Password salah.");
         }
 
-        // Jika berhasil masuk, reset failedLogins
         if (user.failedLogins > 0 || user.lockoutUntil) {
           await prisma.user.update({
             where: { id: user.id },
@@ -90,41 +85,37 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    // 1. Sign In: Logika Ekosistem Tertutup (Gatekeeper)
+    
     async signIn({ user, account, profile }) {
       if (account.provider === "google") {
-        // Cek apakah email sudah terdaftar di database kita
+        
         const existingUser = await prisma.user.findUnique({
           where: { email: user.email },
         });
 
-        // JIKA TIDAK ADA: Tendang ke register
         if (!existingUser) {
           console.warn(`[SSO] Blokir login dari email belum terdaftar: ${user.email}`);
           return '/register?error=not_registered';
         }
 
-        // JIKA ADA: Izinkan login
         console.log(`[SSO] Login diterima: ${user.email}`);
         return true;
       }
       return true;
     },
 
-    // 2. JWT Callback: Menyuntikkan data dari DB ke dalam Token
     async jwt({ token, user, trigger, session }) {
-      // Saat login pertama kali, ambil data user dari DB
+      
       if (user) {
         token.id = user.id;
         token.role = user.role || "USER";
         token.nim = user.nim || null;
         token.prodi = user.prodi || null;
-        // Ambil adminRequestStatus dari DB
+        
         const dbUser = await prisma.user.findUnique({ where: { email: token.email } });
         token.adminRequestStatus = dbUser?.adminRequestStatus || "NONE";
       }
 
-      // Jika profil diupdate (misal setelah onboarding atau update nama)
       if (trigger === "update" && session) {
         token.nim = session.nim ?? token.nim;
         token.prodi = session.prodi ?? token.prodi;
@@ -135,7 +126,6 @@ export const authOptions = {
       return token;
     },
 
-    // 3. Session Callback: Kirim data ke Frontend
     async session({ session, token }) {
       if (session.user && token) {
         session.user.id = token.id;
@@ -150,12 +140,12 @@ export const authOptions = {
 
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 hari
+    maxAge: 30 * 24 * 60 * 60, 
   },
 
   pages: {
     signIn: '/login',
-    error: '/login', // Redirect ke login jika error
+    error: '/login', 
   },
 
   secret: process.env.NEXTAUTH_SECRET,
@@ -163,7 +153,6 @@ export const authOptions = {
 
 export default NextAuth(authOptions);
 
-// Helper: Cek apakah email termasuk domain kampus
 export function isCampusEmail(email) {
   if (!email) return false;
   return CAMPUS_DOMAINS.some((domain) => email.toLowerCase().endsWith(domain));

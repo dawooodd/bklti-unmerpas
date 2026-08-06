@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
-// Helper: Buat slug dari judul
 function generateSlug(title) {
   return title
     .toLowerCase()
@@ -13,7 +12,7 @@ function generateSlug(title) {
 }
 
 export default async function handler(req, res) {
-  // Autentikasi: Hanya ADMIN & SUPER_ADMIN
+  
   const session = await getServerSession(req, res, authOptions);
   if (!session || (session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN")) {
     return res.status(403).json({ success: false, message: "Akses ditolak." });
@@ -22,7 +21,7 @@ export default async function handler(req, res) {
   const { method } = req;
 
   try {
-    // ─── GET: Ambil semua event ─────────────────────────────────────
+    
     if (method === "GET") {
       const events = await prisma.event.findMany({
         orderBy: { createdAt: "desc" },
@@ -39,7 +38,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true, data: serialized });
     }
 
-    // ─── POST: Buat event baru ──────────────────────────────────────
     if (method === "POST") {
       const { title, description, date, location, imageUrl, category, isPublished } = req.body;
 
@@ -67,7 +65,6 @@ export default async function handler(req, res) {
       return res.status(201).json({ success: true, message: "Event berhasil dibuat.", data: event });
     }
 
-    // ─── PUT: Update event ──────────────────────────────────────────
     if (method === "PUT") {
       const { id, title, description, date, location, imageUrl, category, isPublished } = req.body;
 
@@ -91,7 +88,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true, message: "Event berhasil diperbarui.", data: event });
     }
 
-    // ─── DELETE: Hapus event ────────────────────────────────────────
     if (method === "DELETE") {
       const { id } = req.body;
 

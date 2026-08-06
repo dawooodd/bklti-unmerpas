@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 export default async function handler(req, res) {
-  // Hanya menerima method POST
+  
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
@@ -11,7 +11,6 @@ export default async function handler(req, res) {
     });
   }
 
-  // Cek otorisasi: hanya Admin yang bisa broadcast
   const session = await getServerSession(req, res, authOptions);
   if (!session || session.user.role !== "ADMIN") {
     return res.status(403).json({
@@ -23,7 +22,6 @@ export default async function handler(req, res) {
   try {
     const { type, date, message } = req.body;
 
-    // Validasi input
     if (!type || !date || !message) {
       return res.status(400).json({
         success: false,
@@ -31,17 +29,14 @@ export default async function handler(req, res) {
       });
     }
 
-    // Pemetaan target role berdasarkan jenis notifikasi
-    // Jika pengumuman umum, bisa untuk "ALL", sisanya khusus "MAHASISWA"
     const targetRole = type === "PENGUMUMAN" ? "ALL" : "MAHASISWA";
 
-    // Simpan ke database
     const notification = await prisma.notification.create({
       data: {
         type,
         message: message.trim(),
         targetRole,
-        date: new Date(date), // Konversi string date (YYYY-MM-DD) ke Date object
+        date: new Date(date), 
       },
     });
 

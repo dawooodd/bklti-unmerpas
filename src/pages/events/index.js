@@ -5,7 +5,6 @@ import { Button } from "@/components/base";
 import { Header, Footer } from "@/components/sections";
 import { header, footer } from "@/data";
 
-// Data acara BKLTI
 const events = [
   {
     slug: "pelatihan-web-part-6",
@@ -48,7 +47,6 @@ const events = [
   },
 ];
 
-// Warna badge kategori
 const categoryColors = {
   Pelatihan:
     "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
@@ -75,9 +73,8 @@ export default function EventsPage() {
         buttons={header.buttons}
       />
 
-      {/* Hero Section */}
       <section className="relative overflow-hidden pt-32 pb-16 px-6 lg:px-8">
-        {/* Background decorative gradient */}
+
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-b from-primary-100/60 via-primary-50/30 to-transparent dark:from-primary-900/20 dark:via-primary-950/10 rounded-full blur-3xl" />
         </div>
@@ -95,7 +92,6 @@ export default function EventsPage() {
         </div>
       </section>
 
-      {/* Event Grid */}
       <section className="px-6 lg:px-8 pb-24">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -104,14 +100,14 @@ export default function EventsPage() {
                 key={event.slug}
                 className="group flex flex-col h-full bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 overflow-hidden shadow-sm hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-300 ease-in-out hover:-translate-y-1"
               >
-                {/* Card Image */}
+
                 <div className="relative overflow-hidden aspect-video bg-base-100 dark:bg-base-800">
                   <img
                     src={event.image}
                     alt={event.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                   />
-                  {/* Category Badge */}
+
                   <span
                     className={`absolute top-3 left-3 text-xs font-semibold px-3 py-1 rounded-full ${categoryColors[event.category] || "bg-base-100 text-base-600"}`}
                   >
@@ -119,9 +115,8 @@ export default function EventsPage() {
                   </span>
                 </div>
 
-                {/* Card Body */}
                 <div className="flex flex-col flex-1 p-6 gap-3">
-                  {/* Date */}
+
                   <div className="flex items-center gap-2 text-sm text-primary-500 font-medium">
                     <svg
                       className="w-4 h-4"
@@ -139,17 +134,14 @@ export default function EventsPage() {
                     <span>{event.date}</span>
                   </div>
 
-                  {/* Title */}
                   <h3 className="text-lg font-display font-semibold text-title leading-snug line-clamp-2">
                     {event.title}
                   </h3>
 
-                  {/* Description */}
                   <p className="text-sm text-muted line-clamp-3 flex-1">
                     {event.description}
                   </p>
 
-                  {/* Footer: Quota + Button */}
                   <div className="flex items-center justify-between pt-4 mt-auto border-t border-base-100 dark:border-base-800">
                     <span className="text-xs text-muted">
                       Kuota:{" "}

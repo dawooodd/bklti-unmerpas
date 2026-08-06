@@ -8,11 +8,9 @@ import { prisma } from "@/lib/prisma";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 
-// ─── getServerSideProps: Hanya Super Admin yang bisa akses ────────────────────
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  // Proteksi Halaman
   if (!session) {
     return { redirect: { destination: "/auth/login?callbackUrl=/super-admin/users", permanent: false } };
   }
@@ -21,12 +19,10 @@ export async function getServerSideProps(context) {
     return { redirect: { destination: "/", permanent: false } };
   }
 
-  // Fetch seluruh data pengguna dari database
   const rawUsers = await prisma.user.findMany({
     orderBy: { createdAt: "desc" }
   });
 
-  // Serialisasi data Date
   const users = rawUsers.map((u) => ({
     ...u,
     emailVerified: u.emailVerified ? u.emailVerified.toISOString() : null,
@@ -41,7 +37,6 @@ export async function getServerSideProps(context) {
   };
 }
 
-// ─── Halaman Utama ─────────────────────────────────────────────────────────────
 export default function SuperAdminUsersPage({ sessionUser, users }) {
   const router = useRouter();
   
@@ -51,9 +46,8 @@ export default function SuperAdminUsersPage({ sessionUser, users }) {
   const formatDate = (iso) =>
     new Date(iso).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
 
-  // Handle perubahan Role
   const handleChangeRole = async (userId, newRole) => {
-    // Konfirmasi sebelum melakukan aksi
+    
     if (!confirm(`Anda yakin ingin mengubah role pengguna ini menjadi ${newRole}?`)) {
       return;
     }
@@ -72,7 +66,7 @@ export default function SuperAdminUsersPage({ sessionUser, users }) {
 
       if (res.ok) {
         setMessage({ type: "success", text: data.message });
-        // Reload data halaman secara halus
+        
         router.replace(router.asPath, undefined, { scroll: false });
       } else {
         setMessage({ type: "error", text: data.message });
@@ -91,7 +85,7 @@ export default function SuperAdminUsersPage({ sessionUser, users }) {
       </Head>
 
       <div className="min-h-screen bg-base-50 dark:bg-base-950 flex flex-col">
-        {/* Navbar Super Admin */}
+
         <header className="bg-white dark:bg-base-900 border-b border-base-200 dark:border-base-800 sticky top-0 z-40">
           <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -112,7 +106,6 @@ export default function SuperAdminUsersPage({ sessionUser, users }) {
           </div>
         </header>
 
-        {/* Main Content */}
         <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
           
           <div className="mb-8">
@@ -120,7 +113,6 @@ export default function SuperAdminUsersPage({ sessionUser, users }) {
             <p className="text-sm text-muted mt-1">Kelola perizinan dan peran (role) dari seluruh pengguna yang terdaftar.</p>
           </div>
 
-          {/* Notifikasi Pesan */}
           {message.text && (
             <div className={`p-4 rounded-xl mb-6 flex items-start gap-3 border ${
               message.type === "success" 
@@ -138,7 +130,6 @@ export default function SuperAdminUsersPage({ sessionUser, users }) {
             </div>
           )}
 
-          {/* Tabel Pengguna */}
           <div className="bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm whitespace-nowrap">
@@ -192,8 +183,7 @@ export default function SuperAdminUsersPage({ sessionUser, users }) {
                         {formatDate(u.createdAt)}
                       </td>
                       <td className="px-5 py-4 text-right">
-                        
-                        {/* Aksi hanya muncul untuk selain SUPER_ADMIN */}
+
                         {u.role !== "SUPER_ADMIN" ? (
                           <div className="flex justify-end gap-2">
                             {u.role === "USER" && (

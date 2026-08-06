@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     }
 
     if (action === "REQUEST_ADMIN") {
-      // Pastikan bukan Super Admin (tidak perlu request)
+      
       if (session.user.role === "SUPER_ADMIN" || session.user.role === "ADMIN") {
          return res.status(400).json({ message: "Anda sudah memiliki akses admin." });
       }
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error("Error updating profile:", error);
-    // Jika email sudah dipakai orang lain (Unique constraint failed)
+    
     if (error.code === "P2002") {
       return res.status(400).json({ message: "Email ini sudah digunakan." });
     }

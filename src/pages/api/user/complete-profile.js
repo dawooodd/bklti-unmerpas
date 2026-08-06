@@ -10,7 +10,6 @@ export default async function handler(req, res) {
     });
   }
 
-  // Cek apakah user sudah login
   const session = await getServerSession(req, res, authOptions);
   if (!session || !session.user) {
     return res.status(401).json({
@@ -30,7 +29,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Update data user di database
+    
     const updatedUser = await prisma.user.update({
       where: {
         id: session.user.id,
@@ -53,7 +52,6 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error("Error updating profile:", error);
 
-    // Tangani error NIM duplikat (P2002 di Prisma)
     if (error.code === "P2002" && error.meta?.target?.includes("nim")) {
       return res.status(409).json({
         success: false,

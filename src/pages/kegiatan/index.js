@@ -7,7 +7,6 @@ import { header, footer } from "@/data";
 import { Icon } from "@iconify/react";
 import { cn } from "@/lib/utils";
 
-// Kategori filter
 const filterCategories = [
   { value: "semua", label: "Semua", icon: "tabler:layout-grid" },
   { value: "pelatihan", label: "Pelatihan", icon: "tabler:school" },
@@ -15,7 +14,6 @@ const filterCategories = [
   { value: "dokumentasi", label: "Dokumentasi", icon: "tabler:camera" },
 ];
 
-// Data dummy kegiatan
 const activities = [
   {
     id: 1,
@@ -91,7 +89,6 @@ const activities = [
   },
 ];
 
-// Warna badge per kategori
 const categoryStyle = {
   pelatihan:
     "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
@@ -125,7 +122,6 @@ export default function KegiatanPage() {
         buttons={header.buttons}
       />
 
-      {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-16 px-6 lg:px-8">
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-b from-primary-100/60 via-primary-50/30 to-transparent dark:from-primary-900/20 dark:via-primary-950/10 rounded-full blur-3xl" />
@@ -143,7 +139,6 @@ export default function KegiatanPage() {
         </div>
       </section>
 
-      {/* Filter Tabs */}
       <section className="px-6 lg:px-8 pb-10">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-wrap items-center justify-center gap-2">
@@ -186,7 +181,6 @@ export default function KegiatanPage() {
         </div>
       </section>
 
-      {/* Normal Grid (Tahap 5) */}
       <section className="px-6 lg:px-8 pb-24">
         <div className="max-w-6xl mx-auto">
           {filteredActivities.length > 0 ? (
@@ -196,14 +190,14 @@ export default function KegiatanPage() {
                   key={item.id}
                   className="group flex flex-col h-full bg-white dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 overflow-hidden shadow-sm hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-300 ease-in-out hover:-translate-y-1"
                 >
-                  {/* Thumbnail */}
+
                   <div className="relative overflow-hidden aspect-video bg-base-100 dark:bg-base-800">
                     <img
                       src={item.image}
                       alt={item.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                     />
-                    {/* Category Badge */}
+
                     <span
                       className={cn(
                         "absolute top-3 left-3 text-xs font-semibold px-3 py-1 rounded-full",
@@ -215,9 +209,8 @@ export default function KegiatanPage() {
                     </span>
                   </div>
 
-                  {/* Body */}
                   <div className="p-5 flex flex-col flex-grow gap-3">
-                    {/* Date + Read Time */}
+
                     <div className="flex items-center gap-3 text-xs text-muted">
                       <span className="inline-flex items-center gap-1">
                         <Icon icon="tabler:calendar" className="w-3.5 h-3.5" />
@@ -230,17 +223,14 @@ export default function KegiatanPage() {
                       </span>
                     </div>
 
-                    {/* Title */}
                     <h3 className="text-base font-display font-semibold text-title leading-snug line-clamp-2 group-hover:text-primary-500 transition-colors duration-200">
                       {item.title}
                     </h3>
 
-                    {/* Excerpt */}
                     <p className="text-sm text-muted leading-relaxed flex-grow">
                       {item.excerpt}
                     </p>
 
-                    {/* Read More Link */}
                     <Link
                       href={`/kegiatan/${item.slug}`}
                       className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 group/link"
@@ -256,7 +246,7 @@ export default function KegiatanPage() {
               ))}
             </div>
           ) : (
-            /* Empty State */
+            
             <div className="flex flex-col items-center justify-center py-20 gap-4">
               <div className="w-16 h-16 rounded-2xl bg-base-100 dark:bg-base-800 flex items-center justify-center">
                 <Icon

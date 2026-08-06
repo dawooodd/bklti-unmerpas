@@ -207,7 +207,6 @@ export default function Home({ latestNotification }) {
         links={footer.links}
       />
 
-      {/* Announcement Modal */}
       {showModal && latestNotification && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity duration-300">
           <div className="bg-white dark:bg-base-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
@@ -259,7 +258,7 @@ export default function Home({ latestNotification }) {
           </div>
         </div>
       )}
-      {/* Welcome Announcement Modal */}
+
       {showAnnouncement && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity duration-300">
           <div className="bg-white dark:bg-base-900 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
