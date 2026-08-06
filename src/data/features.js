@@ -1,32 +1,50 @@
 export const features = [
+  // Segmen 1
   {
-    title: "Konsultasi Ahli",
-    description: "Dapatkan saran dari profesional TI yang berpengalaman.",
-    icon: "tabler:message-circle-user",
+    title: "Pendampingan Tugas Akhir",
+    description: "Bimbingan teknis terstruktur untuk penyelesaian skripsi dan proyek IT mahasiswa.",
+    icon: "tabler:school",
   },
   {
-    title: "Diskusi Interaktif",
-    description: "Bergabung dalam diskusi menarik bersama para ahli.",
-    icon: "tabler:users",
+    title: "Konsultasi Infrastruktur",
+    description: "Diskusi perancangan jaringan, arsitektur software, dan integrasi sistem.",
+    icon: "tabler:server",
   },
   {
-    title: "Panduan Keamanan Siber",
-    description: "Pelajari praktik terbaik untuk melindungi data dan sistem Anda.",
-    icon: "tabler:shield-heart",
+    title: "Audit Keamanan Siber",
+    description: "Edukasi dan panduan proteksi data serta analisis kerentanan aplikasi.",
+    icon: "tabler:shield-lock",
+  },
+  // Segmen 2
+  {
+    title: "Program Jalur RPL",
+    description: "Kesempatan emas mengonversi pengalaman kerja nyata menjadi SKS akademik yang diakui.",
+    icon: "tabler:certificate",
   },
   {
-    title: "Dukungan Prioritas",
-    description: "Bantuan cepat dan andal untuk kebutuhan TI Anda.",
+    title: "Pelatihan & Sertifikasi",
+    description: "Tingkatkan skill Anda melalui workshop teknologi terbaru dan study jam terpandu.",
+    icon: "tabler:award",
+  },
+  {
+    title: "Akses Modul Terpadu",
+    description: "Tersedia puluhan modul interaktif untuk menunjang pembelajaran mandiri.",
+    icon: "tabler:book",
+  },
+  // Segmen 3
+  {
+    title: "Helpdesk Responsif",
+    description: "Buat tiket bantuan dengan cepat untuk kendala hardware maupun software Anda.",
     icon: "tabler:headset",
   },
   {
-    title: "Solusi Jaringan",
-    description: "Dapatkan rekomendasi dan optimalkan jaringan Anda.",
-    icon: "tabler:network",
+    title: "Troubleshooting Cepat",
+    description: "Tim teknisi siap mendiagnosis dan memberikan solusi presisi untuk perangkat Anda.",
+    icon: "tabler:tool",
   },
   {
-    title: "Sumber Daya Pengetahuan",
-    description: "Akses artikel dan panduan untuk memperluas keterampilan TI Anda.",
-    icon: "tabler:book",
-  },
+    title: "Maintenance Sistem",
+    description: "Layanan perawatan berkala untuk memastikan infrastruktur IT berjalan optimal.",
+    icon: "tabler:settings",
+  }
 ];

@@ -15,8 +15,8 @@ export function Footer({ copyright, logo, links, social, ...rest }) {
         >
           <div className="flex flex-col md:flex-row items-center gap-3">
             <Image
-              src="/logo.png"
-              alt="logo"
+              src={logo.src}
+              alt={logo.alt || "logo"}
               width={160}
               height={40}
               priority

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
 import { prisma } from "@/lib/prisma";
 import { FeatureSection } from "@/components/sections/FeatureSection";
+import AcademicPopup from "../components/AcademicPopup";
 import {
   Header,
   HeroSection,
@@ -60,11 +61,11 @@ export async function getServerSideProps(context) {
 export default function Home({ latestNotification }) {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-  const [showAnnouncement, setShowAnnouncement] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     if (router.query.registered === 'true' || router.query.login === 'success') {
-      setShowAnnouncement(true);
+      setShowPopup(true);
     }
   }, [router.query.registered, router.query.login]);
 
@@ -91,7 +92,8 @@ export default function Home({ latestNotification }) {
     <>
       <Head>
         <meta name="google-site-verification" content="7tsvMUitpfwrWGRn8Uh4zm2VnMCXFKpShHeC9-hkADc" />
-        <title>Bklti-unmerpas</title>
+        <title>BKLTI - Biro Konsultasi Layanan Teknologi Informasi | UNMER Pasuruan</title>
+        <meta name="description" content="Portal layanan helpdesk, konsultasi IT, pelatihan, dan pendaftaran program RPL resmi dari Fakultas Teknologi Informasi Universitas Merdeka Pasuruan." />
       </Head>
       <Header
         logo={header.logo}
@@ -102,8 +104,8 @@ export default function Home({ latestNotification }) {
         id="home"
         badge={{
           href: "#",
-          icon: "tabler:arrow-right",
-          label: "😻 Learn What’s New",
+          icon: "tabler:rocket",
+          label: "Portal Layanan BKLTI Resmi Hadir",
         }}
         title="Konsultasi Teknologi Cerdas, Lebih Mudah."
         description="Terhubung dengan para ahli, diskusikan tantangan IT Anda, dan temukan solusi untuk jaringan, sistem informasi, hingga keamanan siber dalam satu platform terpadu."
@@ -126,7 +128,7 @@ export default function Home({ latestNotification }) {
           alt: "Product Screenshot on Tablet",
           className: "w-full h-auto",
         }}
-        clientsLabel="Trusted by 100+ Brands"
+        clientsLabel="Dipercaya oleh Mitra & Universitas Terkemuka"
         clients={clients}
       />
       <PortalSection
@@ -141,14 +143,14 @@ export default function Home({ latestNotification }) {
       />
       <FeatureSection
         id="features"
-        title="Layanan TI Unggulan Kami"
+        title="Layanan TI Unggulan (Fokus: Akademik & Riset)"
         description="Jelajahi berbagai layanan konsultasi dan diskusi IT yang andal untuk membantu Anda memecahkan tantangan dan terus maju di dunia digital."
-        features={features}
+        features={features.slice(0, 3)}
       />
       <LargeFeatureSection
-        title="Selangkah Lebih Maju dengan Solusi TI Kami"
+        title="Pengembangan Kompetensi (Fokus: Pelatihan & RPL)"
         description="Dapatkan panduan yang tepat, wawasan dari ahli, dan praktik keamanan terbaik untuk menyelesaikan tantangan TI Anda secara efektif."
-        list={features.slice(0, 3)}
+        list={features.slice(3, 6)}
         image={{
           src: "/phone-mockup(2).png",
           alt: "Image",
@@ -158,9 +160,9 @@ export default function Home({ latestNotification }) {
       />
       <LargeFeatureSection
         reverse={true}
-        title="Penuhi Kebutuhan IT Anda dengan Optimal"
+        title="Solusi Kebutuhan IT (Fokus: Dukungan Teknis)"
         description="Hubungi, konsultasikan, dan berkolaborasi bersama kami untuk menemukan solusi terbaik bagi tantangan teknologi Anda."
-        list={features.slice(0, 3)}
+        list={features.slice(6, 9)}
         image={{
           src: "/phone-mockup(1).png",
           alt: "Image",
@@ -175,7 +177,7 @@ export default function Home({ latestNotification }) {
         badge={{
           leading: true,
           icon: "tabler:heart",
-          label: "TESTIMONIALS",
+          label: "TESTIMONI",
         }}
         testimonials={testimonials}
       />
@@ -259,30 +261,7 @@ export default function Home({ latestNotification }) {
         </div>
       )}
 
-      {showAnnouncement && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity duration-300">
-          <div className="bg-white dark:bg-base-900 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
-            <div className="p-8 text-center">
-              <div className="mx-auto w-16 h-16 bg-primary-100 dark:bg-primary-900/40 rounded-full flex items-center justify-center mb-6 text-primary-600 dark:text-primary-400">
-                <Icon icon="tabler:party" className="w-8 h-8" />
-              </div>
-              <h3 className="text-2xl font-display font-bold text-title mb-2">Selamat Datang! / Pengumuman PMB & Jadwal Akademik</h3>
-              <p className="text-muted mb-6">
-                Terima kasih telah mendaftar. Silakan ikuti info akademik terbaru.
-              </p>
-              <button
-                onClick={() => {
-                  setShowAnnouncement(false);
-                  router.replace('/', undefined, { shallow: true });
-                }}
-                className="w-full py-3.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold shadow-lg transition-all"
-              >
-                Tutup
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {showPopup && <AcademicPopup />}
     </>
   );
 }

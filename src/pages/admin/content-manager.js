@@ -13,34 +13,36 @@ export async function getServerSideProps(context) {
     return { redirect: { destination: "/auth/login?callbackUrl=/admin/content-manager", permanent: false } };
   }
 
-  if (session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN") {
+  if (session.user.role !== "SUPER_ADMIN") {
     return { redirect: { destination: "/", permanent: false } };
   }
 
-  const [rawEvents, rawDocuments, rawActivities] = await Promise.all([
-    prisma.eventRegistration.findMany({ orderBy: { createdAt: "desc" } }),
-    prisma.document.findMany({ orderBy: { createdAt: "desc" } }),
+  const [rawEvents, rawModules, rawTickets] = await Promise.all([
+    prisma.event.findMany({ orderBy: { createdAt: "desc" } }),
+    prisma.module.findMany({ orderBy: { createdAt: "desc" } }),
     prisma.helpdeskTicket.findMany({ orderBy: { createdAt: "desc" }, take: 20 }),
   ]);
 
   const serialize = (arr) =>
     arr.map((item) => ({
       ...item,
+      ...(item.date && { date: item.date.toISOString() }),
       createdAt: item.createdAt.toISOString(),
+      ...(item.updatedAt && { updatedAt: item.updatedAt.toISOString() }),
     }));
 
   return {
     props: {
       user: session.user,
       events: serialize(rawEvents),
-      documents: serialize(rawDocuments),
-      tickets: serialize(rawActivities),
+      modules: serialize(rawModules),
+      tickets: serialize(rawTickets),
     },
   };
 }
 
 function AddEventForm({ onClose, onSuccess }) {
-  const [form, setForm] = useState({ eventSlug: "", nama: "", nim: "", instansi: "", noWa: "" });
+  const [form, setForm] = useState({ title: "", description: "", date: "", category: "KEGIATAN", isPublished: true });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -49,7 +51,7 @@ function AddEventForm({ onClose, onSuccess }) {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/events/register", {
+      const res = await fetch("/api/admin/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -62,18 +64,16 @@ function AddEventForm({ onClose, onSuccess }) {
   };
 
   const fields = [
-    { name: "eventSlug", label: "Event Slug", placeholder: "pelatihan-web-part-6" },
-    { name: "nama", label: "Nama Peserta", placeholder: "Nama lengkap" },
-    { name: "nim", label: "NIM", placeholder: "2023010001" },
-    { name: "instansi", label: "Instansi / Prodi", placeholder: "Teknik Informatika" },
-    { name: "noWa", label: "No. WhatsApp", placeholder: "08123456789" },
+    { name: "title", label: "Judul Event", placeholder: "Workshop Next.js", type: "text" },
+    { name: "description", label: "Deskripsi", placeholder: "Penjelasan singkat event", type: "text" },
+    { name: "date", label: "Tanggal", placeholder: "", type: "date" },
   ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
       <div className="w-full max-w-md bg-white dark:bg-base-900 rounded-2xl shadow-2xl p-6">
         <div className="flex items-center justify-between mb-5">
-          <h3 className="font-display font-semibold text-title">Tambah Pendaftar Event</h3>
+          <h3 className="font-display font-semibold text-title">Tambah Event / Kegiatan</h3>
           <button onClick={onClose} className="text-muted hover:text-title transition-colors">
             <Icon icon="tabler:x" className="w-5 h-5" />
           </button>
@@ -83,7 +83,7 @@ function AddEventForm({ onClose, onSuccess }) {
             <div key={f.name} className="flex flex-col gap-1">
               <label className="text-sm font-medium text-title">{f.label}</label>
               <input
-                type="text" required placeholder={f.placeholder}
+                type={f.type} required placeholder={f.placeholder}
                 value={form[f.name]}
                 onChange={(e) => setForm({ ...form, [f.name]: e.target.value })}
                 className="w-full px-4 py-2.5 text-sm rounded-xl border border-base-300 dark:border-base-700 bg-base-50 dark:bg-base-800 text-title focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 transition-all"
@@ -101,8 +101,8 @@ function AddEventForm({ onClose, onSuccess }) {
   );
 }
 
-function AddDocumentForm({ onClose, onSuccess }) {
-  const [form, setForm] = useState({ title: "", category: "", fileUrl: "" });
+function AddModuleForm({ onClose, onSuccess }) {
+  const [form, setForm] = useState({ title: "", category: "Umum", fileUrl: "", isPublished: true });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -111,7 +111,7 @@ function AddDocumentForm({ onClose, onSuccess }) {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/modules/create", {
+      const res = await fetch("/api/admin/modules", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -124,9 +124,9 @@ function AddDocumentForm({ onClose, onSuccess }) {
   };
 
   const fields = [
-    { name: "title", label: "Judul Modul", placeholder: "Modul Pelatihan Web Part 1" },
-    { name: "category", label: "Kategori", placeholder: "Web Dev / Jaringan / Umum" },
-    { name: "fileUrl", label: "URL File / Google Drive", placeholder: "https://drive.google.com/..." },
+    { name: "title", label: "Judul Modul", placeholder: "Modul Pelatihan Web Part 1", type: "text" },
+    { name: "category", label: "Kategori", placeholder: "Web Dev / Jaringan / Umum", type: "text" },
+    { name: "fileUrl", label: "URL File / Google Drive", placeholder: "https://drive.google.com/...", type: "text" },
   ];
 
   return (
@@ -143,7 +143,7 @@ function AddDocumentForm({ onClose, onSuccess }) {
             <div key={f.name} className="flex flex-col gap-1">
               <label className="text-sm font-medium text-title">{f.label}</label>
               <input
-                type="text" required placeholder={f.placeholder}
+                type={f.type} required placeholder={f.placeholder}
                 value={form[f.name]}
                 onChange={(e) => setForm({ ...form, [f.name]: e.target.value })}
                 className="w-full px-4 py-2.5 text-sm rounded-xl border border-base-300 dark:border-base-700 bg-base-50 dark:bg-base-800 text-title focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 transition-all"
@@ -207,13 +207,13 @@ function DataTable({ columns, rows, onDelete, deletingId }) {
   );
 }
 
-export default function ContentManagerPage({ user, events: initialEvents, documents: initialDocuments, tickets: initialTickets }) {
+export default function ContentManagerPage({ user, events: initialEvents, modules: initialModules, tickets: initialTickets }) {
   const [activeTab, setActiveTab] = useState("events");
   const [showForm, setShowForm] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
 
   const [events, setEvents] = useState(initialEvents);
-  const [documents, setDocuments] = useState(initialDocuments);
+  const [modules, setModules] = useState(initialModules);
   const [tickets, setTickets] = useState(initialTickets);
 
   const formatDate = (iso) =>
@@ -223,18 +223,28 @@ export default function ContentManagerPage({ user, events: initialEvents, docume
     if (!confirm("Yakin ingin menghapus data ini?")) return;
     setDeletingId(id);
 
-    const endpointMap = {
-      events:    `/api/events/delete?id=${id}`,
-      documents: `/api/modules/delete?id=${id}`,
-      tickets:   `/api/helpdesk/delete?id=${id}`,
-    };
-
     try {
-      const res = await fetch(endpointMap[type], { method: "DELETE" });
-      if (res.ok) {
-        if (type === "events")    setEvents((prev) => prev.filter((r) => r.id !== id));
-        if (type === "documents") setDocuments((prev) => prev.filter((r) => r.id !== id));
-        if (type === "tickets")   setTickets((prev) => prev.filter((r) => r.id !== id));
+      let res;
+      if (type === "events") {
+        res = await fetch("/api/admin/events", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+        });
+      } else if (type === "modules") {
+        res = await fetch("/api/admin/modules", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+        });
+      } else if (type === "tickets") {
+        res = await fetch(`/api/helpdesk/delete?id=${id}`, { method: "DELETE" });
+      }
+
+      if (res && res.ok) {
+        if (type === "events") setEvents((prev) => prev.filter((r) => r.id !== id));
+        if (type === "modules") setModules((prev) => prev.filter((r) => r.id !== id));
+        if (type === "tickets") setTickets((prev) => prev.filter((r) => r.id !== id));
       } else {
         alert("Gagal menghapus data.");
       }
@@ -248,19 +258,18 @@ export default function ContentManagerPage({ user, events: initialEvents, docume
   const handleSuccess = () => window.location.reload();
 
   const eventColumns = [
-    { key: "nama",      label: "Nama Peserta" },
-    { key: "nim",       label: "NIM" },
-    { key: "eventSlug", label: "Event", render: (v) => <span className="font-mono text-xs bg-base-100 dark:bg-base-800 px-2 py-0.5 rounded">{v}</span> },
-    { key: "instansi",  label: "Instansi" },
-    { key: "createdAt", label: "Tanggal", render: (v) => formatDate(v) },
+    { key: "title", label: "Judul Event" },
+    { key: "slug", label: "Slug", render: (v) => <span className="font-mono text-xs bg-base-100 dark:bg-base-800 px-2 py-0.5 rounded">{v}</span> },
+    { key: "category", label: "Kategori" },
+    { key: "date", label: "Tanggal Pelaksanaan", render: (v) => formatDate(v) },
   ];
 
-  const documentColumns = [
-    { key: "title",     label: "Judul Modul" },
-    { key: "category",  label: "Kategori", render: (v) => (
+  const moduleColumns = [
+    { key: "title", label: "Judul Modul" },
+    { key: "category", label: "Kategori", render: (v) => (
         <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300">{v}</span>
     )},
-    { key: "fileUrl",   label: "URL File", render: (v) => (
+    { key: "fileUrl", label: "URL File", render: (v) => (
         <a href={v} target="_blank" rel="noreferrer" className="text-primary-500 hover:underline flex items-center gap-1">
           <Icon icon="tabler:external-link" className="w-3.5 h-3.5" /> Buka
         </a>
@@ -280,9 +289,9 @@ export default function ContentManagerPage({ user, events: initialEvents, docume
   ];
 
   const tabs = [
-    { key: "events",    label: "Pendaftar Event",   icon: "tabler:calendar-event", count: events.length },
-    { key: "documents", label: "Modul TI",           icon: "tabler:file-text",      count: documents.length },
-    { key: "tickets",   label: "Tiket Helpdesk",     icon: "tabler:ticket",         count: tickets.length },
+    { key: "events",    label: "Data Event",        icon: "tabler:calendar-event", count: events.length },
+    { key: "modules",   label: "Data Modul TI",     icon: "tabler:file-text",      count: modules.length },
+    { key: "tickets",   label: "Tiket Helpdesk",    icon: "tabler:ticket",         count: tickets.length },
   ];
 
   return (
@@ -365,9 +374,9 @@ export default function ContentManagerPage({ user, events: initialEvents, docume
               <DataTable columns={eventColumns} rows={events}
                 onDelete={(id) => handleDelete("events", id)} deletingId={deletingId} />
             )}
-            {activeTab === "documents" && (
-              <DataTable columns={documentColumns} rows={documents}
-                onDelete={(id) => handleDelete("documents", id)} deletingId={deletingId} />
+            {activeTab === "modules" && (
+              <DataTable columns={moduleColumns} rows={modules}
+                onDelete={(id) => handleDelete("modules", id)} deletingId={deletingId} />
             )}
             {activeTab === "tickets" && (
               <DataTable columns={ticketColumns} rows={tickets}
@@ -380,8 +389,8 @@ export default function ContentManagerPage({ user, events: initialEvents, docume
       {showForm && activeTab === "events" && (
         <AddEventForm onClose={() => setShowForm(false)} onSuccess={handleSuccess} />
       )}
-      {showForm && activeTab === "documents" && (
-        <AddDocumentForm onClose={() => setShowForm(false)} onSuccess={handleSuccess} />
+      {showForm && activeTab === "modules" && (
+        <AddModuleForm onClose={() => setShowForm(false)} onSuccess={handleSuccess} />
       )}
       {showForm && activeTab === "tickets" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">

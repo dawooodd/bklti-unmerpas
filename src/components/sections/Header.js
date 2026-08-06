@@ -24,7 +24,7 @@ export function Header({ logo, links, buttons, className, ...rest }) {
           <Image
             src={logo.src}
             alt={logo.alt || "Logo"}
-            width={40}
+            width={160}
             height={40}
             priority
             className="h-10 w-auto dark:invert"

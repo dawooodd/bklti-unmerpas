@@ -14,8 +14,8 @@ function generateSlug(title) {
 export default async function handler(req, res) {
   
   const session = await getServerSession(req, res, authOptions);
-  if (!session || (session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN")) {
-    return res.status(403).json({ success: false, message: "Akses ditolak." });
+  if (!session || session.user.role !== "SUPER_ADMIN") {
+    return res.status(403).json({ success: false, message: "Akses ditolak. Hanya SUPER_ADMIN." });
   }
 
   const { method } = req;

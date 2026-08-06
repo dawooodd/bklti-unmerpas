@@ -1,17 +1,17 @@
 export const footer = {
-  copyright: "© 2026 gitwave. All rights reserved.",
+  copyright: "© 2026 BKLTI UNMER Pasuruan. All rights reserved.",
   logo: {
-    src: "/logo.png",
+    src: "/logo-bklti.png",
     alt: "logo",
   },
   links: [
     {
-      label: "Privacy Policy",
-      href: "#",
+      label: "Kebijakan Privasi",
+      href: "/privacy-policy",
     },
     {
-      label: "Terms of Service",
-      href: "#",
+      label: "Syarat Ketentuan",
+      href: "/terms-of-service",
     },
   ],
   social: [
@@ -22,10 +22,6 @@ export const footer = {
     {
       icon: "tabler:brand-youtube",
       url: "https://www.youtube.com/@BKLTIUnmerpas",
-    },
-    {
-      icon: "tabler:brand-linkedin",
-      url: "#",
     },
   ],
 };

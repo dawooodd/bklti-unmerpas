@@ -1,6 +1,6 @@
 export const header = {
   logo: {
-    src: "/BKLTI.png",
+    src: "/logo-bklti.png",
     alt: "logo",
     href: "/",
   },
