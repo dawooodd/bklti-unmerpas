@@ -165,7 +165,7 @@ export default function Register() {
 
           <div className="mt-8 text-center text-sm text-muted">
             Sudah mendaftar?{" "}
-            <Link href="/auth/login" className="font-semibold text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">
+            <Link href="/login" className="font-semibold text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">
               Masuk di sini
             </Link>
           </div>

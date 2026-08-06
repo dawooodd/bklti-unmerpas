@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 
@@ -13,6 +14,31 @@ export const authOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
       allowDangerousEmailAccountLinking: true,
+    }),
+    CredentialsProvider({
+      name: "Manual Login",
+      credentials: {
+        nama: { label: "Nama Lengkap", type: "text" },
+        nim: { label: "NIM/NIP", type: "text" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.nama || !credentials?.nim) {
+          throw new Error("Nama dan NIM wajib diisi.");
+        }
+
+        const user = await prisma.user.findFirst({
+          where: {
+            name: credentials.nama,
+            nim: credentials.nim,
+          },
+        });
+
+        if (!user) {
+          throw new Error("Akun belum terdaftar. Silakan daftar terlebih dahulu.");
+        }
+
+        return user;
+      },
     }),
   ],
   callbacks: {
