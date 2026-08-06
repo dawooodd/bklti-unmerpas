@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SocialLinks } from "../SocialLinks";
 import { cn } from "@/lib/utils";
+import { Icon } from "@iconify/react";
 
 export function Footer({ copyright, logo, links, social, ...rest }) {
   return (
@@ -9,7 +10,7 @@ export function Footer({ copyright, logo, links, social, ...rest }) {
       <div className="container px-4 mx-auto">
         <div
           className={cn(
-            "flex flex-col md:flex-row justify-between items-center gap-4 py-6"
+            "flex flex-col gap-6 md:flex-row md:justify-between items-center py-6"
           )}
         >
           <Image
@@ -27,7 +28,18 @@ export function Footer({ copyright, logo, links, social, ...rest }) {
               </Link>
             ))}
           </div>
-          <SocialLinks links={social} />
+          <div className="flex items-center gap-4">
+            <SocialLinks links={social} />
+            <a 
+              href="https://www.tiktok.com/@bklti.unmerpas_?_t=zs-8tgonikg89d&_r=1" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-muted hover:text-title transition-colors"
+              aria-label="TikTok"
+            >
+              <Icon icon="tabler:brand-tiktok" className="w-5 h-5" />
+            </a>
+          </div>
         </div>
         
         <div className="border-t border-base py-4 text-center flex justify-center">

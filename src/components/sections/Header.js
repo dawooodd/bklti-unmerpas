@@ -12,23 +12,27 @@ export function Header({ logo, links, buttons, className, ...rest }) {
   const { data: session } = useSession();
 
   return (
-    <header className="fixed w-full bg-base-50/50 dark:bg-base-950/50 backdrop-blur-xl z-10">
+    <header className="fixed top-0 w-full bg-base-50/50 dark:bg-base-950/50 backdrop-blur-xl z-[100]">
       <nav
         className={cn(
-          "relative h-14 container px-0 mx-auto border-b border-base flex flex-wrap justify-start  items-center gap-4 lg:gap-8",
+          "relative h-14 container px-4 mx-auto border-b border-base flex flex-wrap justify-start items-center gap-4 lg:gap-8",
           className
         )}
         {...rest}
       >
-        <Link href={logo.href} prefetch={false}>
+        <Link href={logo.href} prefetch={false} className="flex items-center gap-2">
           <Image
             src={logo.src}
             alt={logo.alt || "Logo"}
-            width={160}
+            width={40}
             height={40}
             priority
             className="h-10 w-auto dark:invert"
           />
+          <div className="hidden lg:flex lg:flex-col justify-center">
+            <span className="font-bold text-sm text-title leading-tight">Biro Konsultasi Layanan Teknologi Informasi</span>
+            <span className="text-xs text-muted leading-tight">Universitas Merdeka Pasuruan</span>
+          </div>
         </Link>
         <div
           className={cn(

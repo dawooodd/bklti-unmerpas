@@ -25,8 +25,13 @@ import {
   footer,
 } from "@/data";
 
-export async function getServerSideProps() {
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+
+export async function getServerSideProps(context) {
   try {
+    const session = await getServerSession(context.req, context.res, authOptions);
+
     const notification = await prisma.notification.findFirst({
       orderBy: { createdAt: "desc" },
     });
@@ -58,10 +63,10 @@ export default function Home({ latestNotification }) {
   const [showAnnouncement, setShowAnnouncement] = useState(false);
 
   useEffect(() => {
-    if (router.query.registered === 'true') {
+    if (router.query.registered === 'true' || router.query.login === 'success') {
       setShowAnnouncement(true);
     }
-  }, [router.query.registered]);
+  }, [router.query.registered, router.query.login]);
 
   useEffect(() => {
     if (latestNotification) {

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 export default async function handler(req, res) {
   if (!process.env.DATABASE_URL) {
@@ -11,7 +12,7 @@ export default async function handler(req, res) {
 
   try {
     console.log("INCOMING DATA:", req.body);
-    const { name, email, nim, prodi } = req.body;
+    const { name, email, nim, prodi, password } = req.body;
     
     // Bersihkan input
     const cleanName = name?.trim();
@@ -20,8 +21,8 @@ export default async function handler(req, res) {
     const cleanProdi = prodi?.trim();
 
     // Validasi input dasar
-    if (!cleanName || !cleanEmail || !cleanNim || !cleanProdi) {
-      return res.status(400).json({ message: "Semua field wajib diisi." });
+    if (!cleanName || !cleanEmail || !cleanNim || !cleanProdi || !password) {
+      return res.status(400).json({ message: "Semua field (termasuk password) wajib diisi." });
     }
 
     // Validasi format email sederhana
@@ -47,6 +48,9 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "NIM sudah terdaftar." });
     }
 
+    // Hash password sebelum disimpan
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     // TAHAP 3: Logika Bootstrapping Super Admin (Tendik Only)
     let assignedRole = "USER";
 
@@ -70,6 +74,7 @@ export default async function handler(req, res) {
         email: cleanEmail,
         nim: cleanNim,
         prodi: cleanProdi,
+        password: hashedPassword,
         role: assignedRole,
         adminRequestStatus: "NONE",
       },

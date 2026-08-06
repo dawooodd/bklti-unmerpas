@@ -1,9 +1,9 @@
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
-import { Inter, Syne } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
-const display = Syne({
+const display = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-display",
 });
@@ -15,7 +15,9 @@ const body = Inter({
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <main className={`${display.variable} ${body.variable} font-sans`}>
+        <Component {...pageProps} />
+      </main>
     </SessionProvider>
   );
 }

@@ -18,26 +18,71 @@ export const authOptions = {
     CredentialsProvider({
       name: "Manual Login",
       credentials: {
-        nama: { label: "Nama Lengkap", type: "text" },
-        nim: { label: "NIM/NIP", type: "text" },
+        identifier: { label: "NIM atau Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.nama || !credentials?.nim) {
-          throw new Error("Nama dan NIM wajib diisi.");
+        if (!credentials?.identifier || !credentials?.password) {
+          throw new Error("NIM/Email dan Password wajib diisi.");
         }
 
-        const cleanName = credentials.nama.trim();
-        const cleanNim = credentials.nim.trim();
+        const identifier = credentials.identifier.trim();
+        const password = credentials.password;
 
+        // Cari berdasarkan NIM atau Email
         const user = await prisma.user.findFirst({
           where: {
-            name: { equals: cleanName, mode: 'insensitive' },
-            nim: { equals: cleanNim, mode: 'insensitive' },
+            OR: [
+              { email: { equals: identifier, mode: 'insensitive' } },
+              { nim: { equals: identifier, mode: 'insensitive' } },
+            ],
           },
         });
 
         if (!user) {
-          throw new Error("Akun belum terdaftar. Silakan daftar terlebih dahulu.");
+          throw new Error("Akun tidak ditemukan. Silakan daftar terlebih dahulu.");
+        }
+
+        // Cek apakah akun sedang terkunci
+        if (user.lockoutUntil && new Date() < user.lockoutUntil) {
+          const secondsLeft = Math.ceil((user.lockoutUntil - new Date()) / 1000);
+          throw new Error(`Akun terkunci sementara. Coba lagi dalam ${secondsLeft} detik.`);
+        }
+
+        // Komparasi Password
+        const bcrypt = require("bcryptjs");
+        const isPasswordValid = await bcrypt.compare(password, user.password || "");
+
+        if (!isPasswordValid) {
+          // Logika Brute Force
+          const newFailedLogins = user.failedLogins + 1;
+          let newLockoutUntil = null;
+
+          if (newFailedLogins >= 5) {
+            const lockoutSeconds = 60 * (newFailedLogins - 4);
+            newLockoutUntil = new Date(Date.now() + lockoutSeconds * 1000);
+          }
+
+          await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              failedLogins: newFailedLogins,
+              lockoutUntil: newLockoutUntil,
+            },
+          });
+
+          if (newLockoutUntil) {
+            throw new Error(`Password salah berulang kali. Akun ditangguhkan ${60 * (newFailedLogins - 4)} detik.`);
+          }
+          throw new Error("Password salah.");
+        }
+
+        // Jika berhasil masuk, reset failedLogins
+        if (user.failedLogins > 0 || user.lockoutUntil) {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { failedLogins: 0, lockoutUntil: null },
+          });
         }
 
         return user;

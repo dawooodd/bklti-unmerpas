@@ -4,13 +4,33 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
 import { signIn } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
 
 export default function Login() {
   const router = useRouter();
   const [form, setForm] = useState({
-    nama: "",
-    nim: "",
+    identifier: "",
+    password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -21,8 +41,8 @@ export default function Login() {
 
     try {
       const res = await signIn("credentials", {
-        nama: form.nama,
-        nim: form.nim,
+        identifier: form.identifier,
+        password: form.password,
         redirect: false,
       });
 
@@ -30,8 +50,7 @@ export default function Login() {
         throw new Error(res.error);
       }
 
-      // Berhasil login manual, arahkan ke halaman utama
-      router.push("/");
+      router.push("/?login=success");
     } catch (err) {
       setError(err.message || "Gagal masuk. Periksa kembali data Anda.");
     } finally {
@@ -59,7 +78,7 @@ export default function Login() {
             )}
 
             <div>
-              <label className="block text-sm font-semibold text-title mb-1.5">Nama Lengkap</label>
+              <label className="block text-sm font-semibold text-title mb-1.5">NIM atau Email</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <Icon icon="tabler:user" className="w-5 h-5 text-muted" />
@@ -67,28 +86,35 @@ export default function Login() {
                 <input
                   type="text"
                   required
-                  value={form.nama}
-                  onChange={(e) => setForm({ ...form, nama: e.target.value })}
+                  value={form.identifier}
+                  onChange={(e) => setForm({ ...form, identifier: e.target.value })}
                   className="w-full pl-11 pr-4 py-3 bg-base-50 dark:bg-base-950 border border-base-200 dark:border-base-800 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-title"
-                  placeholder="Contoh: Budi Santoso"
+                  placeholder="Contoh: 1234567 atau email"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-title mb-1.5">NIM / NIP</label>
+              <label className="block text-sm font-semibold text-title mb-1.5">Password</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Icon icon="tabler:id" className="w-5 h-5 text-muted" />
+                  <Icon icon="tabler:lock" className="w-5 h-5 text-muted" />
                 </div>
                 <input
-                  type="text"
+                  type={showPassword ? "text" : "password"}
                   required
-                  value={form.nim}
-                  onChange={(e) => setForm({ ...form, nim: e.target.value })}
-                  className="w-full pl-11 pr-4 py-3 bg-base-50 dark:bg-base-950 border border-base-200 dark:border-base-800 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-title"
-                  placeholder="Nomor Induk"
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  className="w-full pl-11 pr-12 py-3 bg-base-50 dark:bg-base-950 border border-base-200 dark:border-base-800 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-title"
+                  placeholder="Masukkan Password"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-muted hover:text-title"
+                >
+                  <Icon icon={showPassword ? "tabler:eye-off" : "tabler:eye"} className="w-5 h-5" />
+                </button>
               </div>
             </div>
 

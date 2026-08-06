@@ -40,14 +40,14 @@ export function HeroSection({
           transition={{ duration: 0.6 }}
           className="flex flex-col justify-center items-center min-h-[70vh] lg:min-h-[80vh]"
         >
-          <div className="flex flex-col justify-center items-center gap-4 text-center max-w-4xl mx-auto mt-16 lg:mt-24 pb-8">
+          <div className="flex flex-col justify-center items-start md:items-center gap-4 text-left md:text-center max-w-4xl mx-auto mt-16 lg:mt-24 pb-8">
             <Badge {...badge} />
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-primary-500 to-purple-500 pb-2">
               {title}
             </h1>
             <p className="text-xl md:text-2xl text-muted max-w-2xl mt-4">{description}</p>
             {buttons.length > 0 && (
-              <div className="flex justify-center items-center gap-4 mt-8">
+              <div className="flex flex-col md:flex-row justify-start md:justify-center items-start md:items-center gap-4 mt-8 w-full">
                 {buttons.map((button, index) => (
                   <Button key={index} {...button} />
                 ))}

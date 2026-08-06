@@ -40,6 +40,8 @@ model User {
   emailVerified      DateTime?
   image              String?
   password           String?
+  failedLogins       Int                @default(0)
+  lockoutUntil       DateTime?
   role               Role               @default(USER)
   nim                String?            @unique
   prodi              String?
